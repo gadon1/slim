@@ -27,13 +27,13 @@ class _SlimNotifier extends ChangeNotifier {
   @override
   bool get hasListeners => isModelNotifier && stateObject.hasListeners;
 
-  listen() => (stateObject as ChangeNotifier).addListener(notifyListeners);
+  void listen() => (stateObject as ChangeNotifier).addListener(notifyListeners);
 }
 
 class Slimer<T> {
   final T stateObject;
   Slimer(this.stateObject);
-  slim(Widget child) => Slim<T>(child: child, stateObject: stateObject);
+  Widget slim(Widget child) => Slim<T>(child: child, stateObject: stateObject);
 }
 
 class MultiSlim extends StatelessWidget {

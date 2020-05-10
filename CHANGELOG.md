@@ -1,3 +1,7 @@
+## [1.1.0]
+
+add return type to functions
+
 ## [1.0.9]
 
 extension method use MultiSlim
