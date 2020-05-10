@@ -1,7 +1,7 @@
 name: slim
 description: Super Light State Management out of the box. Easy way to work with ChangeNotifier or any other model class.
-version: 1.0.4
-homepage: http://www.pYrogss.com
+version: 1.0.5
+homepage: https://github.com/gadon1/slim
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
