@@ -1,3 +1,7 @@
+## [1.0.7]
+
+Fix description
+
 ## [1.0.6]
 
 MultiSlim with extension method

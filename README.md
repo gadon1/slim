@@ -1,6 +1,6 @@
 # slim
 
-Super light statemanagment implemented pure out of the box.
+Super light state managment implemented pure out of the box.
 
 # Resolve
 
