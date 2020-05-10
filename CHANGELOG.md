@@ -1,10 +1,14 @@
+## [1.0.9]
+
+extension method use MultiSlim
+
 ## [1.0.8]
 
 MultiSlim use of extension method
 
 ## [1.0.7]
 
-Fix description
+fix description
 
 ## [1.0.6]
 
@@ -16,19 +20,19 @@ add git url
 
 ## [1.0.4]
 
-Fix description
+fix description
 
 ## [1.0.3]
 
-Expanded description
+expanded(description)
 
 ## [1.0.2]
 
-Expanded description
+expanded(description)
 
 ## [1.0.1]
 
-Expanded description
+expanded(description)
 
 ## [1.0.0]
 
