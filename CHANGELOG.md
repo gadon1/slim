@@ -1,3 +1,7 @@
+## [1.0.8]
+
+MultiSlim use of extension method
+
 ## [1.0.7]
 
 Fix description

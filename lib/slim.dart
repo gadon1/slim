@@ -42,8 +42,7 @@ class MultiSlim extends StatelessWidget {
   MultiSlim({@required this.child, @required this.slimers});
 
   @override
-  Widget build(BuildContext context) =>
-      slimers.fold(null, (value, slimer) => slimer.slim(value ?? child));
+  Widget build(BuildContext context) => slimers.slim(child: child);
 }
 
 extension SlimerX on List<Slimer> {
