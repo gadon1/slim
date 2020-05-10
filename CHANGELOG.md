@@ -1,3 +1,7 @@
+## [1.0.6]
+
+MultiSlim with extension method
+
 ## [1.0.5]
 
 add git url
