@@ -1,3 +1,7 @@
+## [1.1.1]
+
+expanded(readme)
+
 ## [1.1.0]
 
 add return type to functions
