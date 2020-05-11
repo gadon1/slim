@@ -9,7 +9,7 @@ void main() {
         builder: (context) => Slim<String>(
           child: Builder(
             builder: (ctx) {
-              expect(Slim.of<String>(ctx), 'slim works');
+              expect(ctx.slim<String>(), 'slim works');
               return Container();
             },
           ),
@@ -22,12 +22,12 @@ void main() {
   testWidgets('multi slim', (WidgetTester tester) async {
     await tester.pumpWidget(
       Builder(
-        builder: (context) => MultiSlim(
-          slimers: [Slimer<String>('slim works'), Slimer<int>(10)],
+        builder: (context) =>
+            [Slimer<String>('slim works'), Slimer<int>(10)].slim(
           child: Builder(
             builder: (ctx) {
-              expect(Slim.of<String>(ctx), 'slim works');
-              expect(Slim.of<int>(ctx), 10);
+              expect(ctx.slim<String>(), 'slim works');
+              expect(ctx.slim<int>(), 10);
               return Container();
             },
           ),

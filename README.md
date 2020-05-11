@@ -9,7 +9,8 @@ Super light state managment implemented pure out of the box.
     class _MyHomePageState extends State<MyHomePage> {
         @override
         Widget build(BuildContext context) {
-            final counter = Slim.of<Counter>(context);
+            final counter = context.slim<Counter>();
+            // you can also do - final counter = Slim.of<Counter>(context);
 
             return Scaffold(
             appBar: AppBar(

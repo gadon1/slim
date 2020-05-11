@@ -1,3 +1,7 @@
+## [1.1.2]
+
+extension method slim for context
+
 ## [1.1.1]
 
 expanded(readme)
