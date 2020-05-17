@@ -7,27 +7,21 @@ class Slim<T> extends InheritedNotifier<ChangeNotifier> {
       : super(child: child, notifier: _SlimNotifier(stateObject));
 
   @override
-  bool updateShouldNotify(InheritedWidget oldWidget) =>
-      (notifier as _SlimNotifier).hasListeners;
+  bool updateShouldNotify(InheritedWidget oldWidget) => true;
 
-  static T of<T>(BuildContext context) {
-    _SlimNotifier notifier =
-        context.dependOnInheritedWidgetOfExactType<Slim<T>>().notifier;
-    if (!notifier.hasListeners && notifier.isModelNotifier) notifier.listen();
-    return notifier.stateObject;
-  }
+  static T of<T>(BuildContext context) =>
+      (context.dependOnInheritedWidgetOfExactType<Slim<T>>().notifier
+              as _SlimNotifier)
+          .stateObject;
 }
 
 class _SlimNotifier extends ChangeNotifier {
   final stateObject;
-  _SlimNotifier(this.stateObject);
 
-  bool get isModelNotifier => stateObject is ChangeNotifier;
-
-  @override
-  bool get hasListeners => isModelNotifier && stateObject.hasListeners;
-
-  void listen() => (stateObject as ChangeNotifier).addListener(notifyListeners);
+  _SlimNotifier(this.stateObject) {
+    if (stateObject is ChangeNotifier)
+      (stateObject as ChangeNotifier).addListener(notifyListeners);
+  }
 }
 
 class Slimer<T> {
@@ -42,13 +36,12 @@ class MultiSlim extends StatelessWidget {
   MultiSlim({@required this.child, @required this.slimers});
 
   @override
-  Widget build(BuildContext context) =>
-      slimers.fold(null, (value, slimer) => slimer.slim(value ?? child));
+  Widget build(BuildContext context) => slimers.slim(child: child);
 }
 
 extension SlimSlimersX on List<Slimer> {
   Widget slim({@required Widget child}) =>
-      MultiSlim(child: child, slimers: this);
+      fold(null, (value, slimer) => slimer.slim(value ?? child));
 }
 
 extension SlimBuildContextX on BuildContext {

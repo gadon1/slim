@@ -1,3 +1,7 @@
+## [1.1.3]
+
+simplify implementation
+
 ## [1.1.2]
 
 extension method slim for context

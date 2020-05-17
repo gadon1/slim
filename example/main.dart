@@ -42,7 +42,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final counter = Slim.of<Counter>(context);
+    final counter = context.slim<Counter>();
 
     return Scaffold(
       appBar: AppBar(
