@@ -1,6 +1,10 @@
+## [1.1.4]
+
+another minor implementation reduction
+
 ## [1.1.3]
 
-simplify implementation
+minor implementation reduction
 
 ## [1.1.2]
 

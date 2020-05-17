@@ -6,9 +6,6 @@ class Slim<T> extends InheritedNotifier<ChangeNotifier> {
   Slim({@required Widget child, @required T stateObject})
       : super(child: child, notifier: _SlimNotifier(stateObject));
 
-  @override
-  bool updateShouldNotify(InheritedWidget oldWidget) => true;
-
   static T of<T>(BuildContext context) =>
       (context.dependOnInheritedWidgetOfExactType<Slim<T>>().notifier
               as _SlimNotifier)
@@ -17,7 +14,6 @@ class Slim<T> extends InheritedNotifier<ChangeNotifier> {
 
 class _SlimNotifier extends ChangeNotifier {
   final stateObject;
-
   _SlimNotifier(this.stateObject) {
     if (stateObject is ChangeNotifier)
       (stateObject as ChangeNotifier).addListener(notifyListeners);
@@ -27,6 +23,7 @@ class _SlimNotifier extends ChangeNotifier {
 class Slimer<T> {
   final T stateObject;
   Slimer(this.stateObject);
+
   Widget slim(Widget child) => Slim<T>(child: child, stateObject: stateObject);
 }
 
