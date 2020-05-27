@@ -6,13 +6,15 @@ void main() {
   runApp(MyApp());
 }
 
+//slim object for state management +
 class Counter extends SlimObject {
   int value = 0;
   inc() {
     value++;
-    updateUI();
+    updateUI(); //update state
   }
 
+  //show overlay with widget in center of screen
   testWidget() => showWidget(Container(
         height: 250,
         decoration: BoxDecoration(
@@ -22,35 +24,43 @@ class Counter extends SlimObject {
         child: Center(child: Text("value is: $value")),
       ));
 
+  //show overlay with Text in center of screen
   testOverlay() =>
       showOverlay("value is: $value", messageBackgroundColor: Colors.red);
 
+  //show snackbar with text
   testSnack() =>
       showSnackBar("value is: $value", messageBackgroundColor: Colors.red);
 }
 
 class MyApp extends StatelessWidget {
   MyApp() {
+    //set up supported locales
     SlimLocalizations.supportedLocales = [
       const Locale('en', 'US'),
       const Locale('he', 'IL'),
     ];
 
+    //you can create custom slim localizations
     //SlimLocalizations.slimLocaleLoader = CustomSlimLocalizations();
   }
 
   @override
   Widget build(BuildContext context) {
     return [Slimer<Counter>(Counter())].slim(
+        //putting state/bloc objects in the tree using extensions, there are more then one way putting it there
         child: MaterialApp(
-      builder: SlimMaterialAppBuilder.builder,
+      builder: SlimMaterialAppBuilder
+          .builder, //to support slim messages for SlimObject
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      localizationsDelegates: SlimLocalizations.delegates,
-      supportedLocales: SlimLocalizations.supportedLocales,
+      localizationsDelegates:
+          SlimLocalizations.delegates, //set localizations delegates
+      supportedLocales:
+          SlimLocalizations.supportedLocales, //set supported locales
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     ));
   }
@@ -75,6 +85,8 @@ class MyHomePage extends StatelessWidget {
                 'You have pushed the button this many times:',
               ),
               SlimBuilder<Counter>(
+                //local access (just for eample) for counter up the tree - you can wrap the scaffold with the slim builder instead
+
                 builder: (cnt) => Text(
                   '${cnt.value}',
                   style: Theme.of(context).textTheme.headline4,
