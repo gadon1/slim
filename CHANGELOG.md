@@ -1,3 +1,14 @@
+## [2.0.0]
+
+introducing extensions, SlimMaterialAppBuilder, SlimBuilder, SlimObject, SlimLocalizations
+
+SlimMaterialAppBuilder - MaterailApp:builder
+supports context extensions and SlimObject to show overlays and snackbar messages
+
+SlimObject - abstract class with main function of:
+state management - updateUI()
+messages - showSnackBar, showOverlay, showWidget, clearMessage, forceClearMessage
+
 ## [1.1.4]
 
 another minor implementation reduction
