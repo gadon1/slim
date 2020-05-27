@@ -82,7 +82,7 @@ class MyHomePage extends StatelessWidget {
               ),
               FlatButton(
                 child: Text("next page"),
-                onPressed: () => MyHomePage2(title: "Hi").push(context),
+                onPressed: () => MyHomePage(title: "Hi").push(context),
                 color: Colors.blue,
               ),
               SlimBuilder<Counter>(
