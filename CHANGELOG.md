@@ -1,3 +1,11 @@
+## [2.0.5]
+
+update example
+
+## [2.0.4]
+
+update example
+
 ## [2.0.3]
 
 making messages stream based

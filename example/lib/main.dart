@@ -85,6 +85,7 @@ class MyHomePage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                //if you use default locaization for locale files stored at assets/locales/ you can translate like this
                 Text(context.translate("hi")),
                 Text(
                   'You have pushed the button this many times:',
