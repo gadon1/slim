@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'extensions.dart';
 
 class Slim<T> extends InheritedNotifier<ChangeNotifier> {
   Slim({@required Widget child, @required T stateObject})
@@ -24,6 +23,11 @@ class Slimer<T> {
   Slimer(this.stateObject);
 
   Widget slim(Widget child) => Slim<T>(child: child, stateObject: stateObject);
+}
+
+extension SlimSlimersX on List<Slimer> {
+  Widget slim({@required Widget child}) =>
+      fold(null, (value, slimer) => slimer.slim(value ?? child));
 }
 
 class MultiSlim extends StatelessWidget {

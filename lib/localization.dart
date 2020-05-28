@@ -7,7 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 abstract class SlimLocaleLoader {
   Locale locale;
   Future<bool> load();
-  String translate(String key);
+  String translate(String key) => key;
 }
 
 class DefaultSlimLocaleLoader extends SlimLocaleLoader {

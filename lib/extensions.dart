@@ -6,11 +6,6 @@ extension SlimStringX on String {
   bool get isNotNullOrEmpty => (this ?? '').isNotEmpty;
 }
 
-extension SlimSlimersX on List<Slimer> {
-  Widget slim({@required Widget child}) =>
-      fold(null, (value, slimer) => slimer.slim(value ?? child));
-}
-
 extension SlimWidgetX on Widget {
   Future<T> push<T>(BuildContext context) =>
       context.push(MaterialPageRoute(builder: (_) => this));

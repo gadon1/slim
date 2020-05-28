@@ -16,9 +16,14 @@ class SlimBuilder<T> extends StatelessWidget {
   }
 }
 
-class SlimMaterialAppBuilder extends StatelessWidget {
+class SlimMaterialAppBuilder {
+  static Widget builder(BuildContext context, Widget child) =>
+      _SlimMaterialAppBuilder(child);
+}
+
+class _SlimMaterialAppBuilder extends StatelessWidget {
   final Widget child;
-  SlimMaterialAppBuilder(this.child);
+  _SlimMaterialAppBuilder(this.child);
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -30,9 +35,6 @@ class SlimMaterialAppBuilder extends StatelessWidget {
           ],
         ),
       );
-
-  static Widget builder(BuildContext context, Widget child) =>
-      SlimMaterialAppBuilder(child);
 }
 
 abstract class SlimObject extends ChangeNotifier {

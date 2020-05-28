@@ -23,7 +23,7 @@ abstract class RestApi {
   Future<RestApiResult> post(String serviceUrl, dynamic body, {String extra}) =>
       _post(serviceUrl, RestApiMethod.POST, body, extra: extra);
 
-  Future<RestApiResult> pur(String serviceUrl, dynamic body, {String extra}) =>
+  Future<RestApiResult> put(String serviceUrl, dynamic body, {String extra}) =>
       _post(serviceUrl, RestApiMethod.PUT, body, extra: extra);
 
   Future<RestApiResult> _get(String serviceUrl, RestApiMethod method,
