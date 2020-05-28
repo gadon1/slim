@@ -179,6 +179,14 @@ class _SlimMessage extends StatelessWidget {
       });
 }
 
+Future<bool> _onWillPop() async {
+  if (_slimMessageStream.hasMessage) {
+    _slimMessageStream.clear();
+    return false;
+  }
+  return true;
+}
+
 extension SlimBuildContextMessagesX on BuildContext {
   void _showMessage(dynamic message, Color messageBackgroundColor,
       messageTextStyle, _MessageType messageType, bool dissmisable) {
@@ -189,6 +197,9 @@ extension SlimBuildContextMessagesX on BuildContext {
     _slimMessageObject.messageType = messageType;
     _slimMessageObject.dissmisable = dissmisable;
     _slimMessageStream.show(_slimMessageObject);
+    final route = ModalRoute.of(this);
+    route?.removeScopedWillPopCallback(_onWillPop);
+    route?.addScopedWillPopCallback(_onWillPop);
   }
 
   void forceClearMessage() {

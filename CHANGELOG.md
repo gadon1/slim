@@ -1,3 +1,7 @@
+## [2.0.7]
+
+add support for close message on navigator pop
+
 ## [2.0.6]
 
 update example
