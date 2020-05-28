@@ -37,7 +37,7 @@ class SlimLocalizations {
   static List<Locale> supportedLocales = [];
 
   static List<LocalizationsDelegate> delegates = [
-    delegate,
+    _SlimLocalizationsDelegate(),
     GlobalMaterialLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
@@ -48,11 +48,9 @@ class SlimLocalizations {
   }
 
   Future<bool> load() => slimLocaleLoader.load();
-
-  static get delegate => SlimLocalizationsDelegate();
 }
 
-class SlimLocalizationsDelegate
+class _SlimLocalizationsDelegate
     extends LocalizationsDelegate<SlimLocalizations> {
   @override
   bool isSupported(Locale locale) =>
@@ -66,7 +64,7 @@ class SlimLocalizationsDelegate
   }
 
   @override
-  bool shouldReload(SlimLocalizationsDelegate old) => false;
+  bool shouldReload(_SlimLocalizationsDelegate old) => false;
 }
 
 extension SlimLocalizationX on BuildContext {

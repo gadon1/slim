@@ -1,6 +1,6 @@
 name: slim
 description: super light state managment, usefull extensions, snackbar, overlay and widget messages, localizations, rest api and more
-version: 2.0.7
+version: 2.0.8
 homepage: https://github.com/gadon1/slim
 
 environment:
