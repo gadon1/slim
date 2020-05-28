@@ -75,61 +75,64 @@ class MyHomePage extends StatelessWidget {
   final String title;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(title),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(context.translate("hi")),
-              Text(
-                'You have pushed the button this many times:',
-              ),
-              SlimBuilder<Counter>(
-                //local access (just for eample) for counter up the tree - you can wrap the scaffold with the slim builder instead
-
-                builder: (cnt) => Text(
-                  '${cnt.value}',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ),
-              FlatButton(
-                child: Text("next page"),
-                onPressed: () => MyHomePage(title: "Hi").push(context),
-                color: Colors.blue,
-              ),
-              SlimBuilder<Counter>(
-                builder: (cnt) => FlatButton(
-                  child: Text("test overlay"),
-                  onPressed: cnt.testOverlay,
-                  color: Colors.yellow,
-                ),
-              ),
-              SlimBuilder<Counter>(
-                builder: (cnt) => FlatButton(
-                  child: Text("test snack"),
-                  onPressed: cnt.testSnack,
-                  color: Colors.red,
-                ),
-              ),
-              SlimBuilder<Counter>(
-                builder: (cnt) => FlatButton(
-                  child: Text("test widget"),
-                  onPressed: cnt.testWidget,
-                  color: Colors.pink,
-                ),
-              ),
-            ],
+  Widget build(BuildContext context) => SlimBuilder<Counter>(
+        //top of the page access
+        builder: (counter) => Scaffold(
+          appBar: AppBar(
+            title: Text(title),
           ),
-        ),
-        floatingActionButton: SlimBuilder<Counter>(
-          builder: (c2) => FloatingActionButton(
-            heroTag: "main",
-            onPressed: c2.inc,
-            tooltip: 'Increment',
-            child: Icon(Icons.add),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(context.translate("hi")),
+                Text(
+                  'You have pushed the button this many times:',
+                ),
+                SlimBuilder<Counter>(
+                  //local access (just for eample) for counter up the tree - you can wrap the scaffold with the slim builder instead
+
+                  builder: (cnt) => Text(
+                    '${cnt.value}',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                ),
+                FlatButton(
+                  child: Text("next page"),
+                  onPressed: () => MyHomePage(title: "Hi").push(context),
+                  color: Colors.blue,
+                ),
+                SlimBuilder<Counter>(
+                  builder: (cnt) => FlatButton(
+                    child: Text("test overlay"),
+                    onPressed: cnt.testOverlay,
+                    color: Colors.yellow,
+                  ),
+                ),
+                SlimBuilder<Counter>(
+                  builder: (cnt) => FlatButton(
+                    child: Text("test snack"),
+                    onPressed: cnt.testSnack,
+                    color: Colors.red,
+                  ),
+                ),
+                SlimBuilder<Counter>(
+                  builder: (cnt) => FlatButton(
+                    child: Text("test widget"),
+                    onPressed: cnt.testWidget,
+                    color: Colors.pink,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          floatingActionButton: SlimBuilder<Counter>(
+            builder: (c2) => FloatingActionButton(
+              heroTag: "main",
+              onPressed: c2.inc,
+              tooltip: 'Increment',
+              child: Icon(Icons.add),
+            ),
           ),
         ),
       );
