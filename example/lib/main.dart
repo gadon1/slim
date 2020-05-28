@@ -17,6 +17,8 @@ class Counter extends SlimObject {
   //access to current context
   moveToPage(Widget page) => page.push(context);
 
+  //slim messages supported in SlimObject and BuildContext
+
   //show overlay with widget in center of screen
   testWidget() => showWidget(Container(
         height: 250,
@@ -53,8 +55,7 @@ class MyApp extends StatelessWidget {
     return [Slimer<Counter>(Counter())].slim(
         //putting state/bloc objects in the tree using extensions, there are more then one way putting it there
         child: MaterialApp(
-      builder: SlimMaterialAppBuilder
-          .builder, //to support slim messages for SlimObject
+      builder: SlimMaterialAppBuilder.builder, //to support slim messages
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -106,14 +107,18 @@ class MyHomePage extends StatelessWidget {
                 SlimBuilder<Counter>(
                   builder: (cnt) => FlatButton(
                     child: Text("test overlay"),
-                    onPressed: cnt.testOverlay,
+                    onPressed:
+                        cnt.testOverlay, //showing slim message from SlimObject
                     color: Colors.yellow,
                   ),
                 ),
                 SlimBuilder<Counter>(
                   builder: (cnt) => FlatButton(
                     child: Text("test snack"),
-                    onPressed: cnt.testSnack,
+                    onPressed: () => context.showSnackBar(
+                        "snack bar from context",
+                        messageBackgroundColor:
+                            Colors.red), //showing slim message from context
                     color: Colors.red,
                   ),
                 ),
