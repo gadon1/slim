@@ -1,3 +1,7 @@
+## [2.0.9]
+
+typos and some internal classes made private
+
 ## [2.0.8]
 
 localization - make delegate class private
