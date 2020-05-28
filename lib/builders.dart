@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'state_management.dart';
 import 'extensions.dart';
+import 'dart:async';
+
+_SlimMessageStream _slimMessageStream = _SlimMessageStream();
 
 class SlimBuilder<T> extends StatelessWidget {
   final Widget Function(T stateObject) builder;
@@ -19,13 +21,13 @@ class SlimMaterialAppBuilder extends StatelessWidget {
   SlimMaterialAppBuilder(this.child);
 
   @override
-  Widget build(BuildContext context) => Slim<_SlimMessageObject>(
-        stateObject: _SlimMessageObject(),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Stack(
-            children: <Widget>[child, _SlimMessage()],
-          ),
+  Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Stack(
+          children: <Widget>[
+            child,
+            _SlimMessage(),
+          ],
         ),
       );
 
@@ -39,11 +41,9 @@ abstract class SlimObject extends ChangeNotifier {
   BuildContext _getMessageObject() {
     if (_contexts.isEmpty) return null;
     try {
-      _contexts.last.slim<_SlimMessageObject>();
-      return _contexts.last;
-    } catch (e) {
-      _contexts.removeLast();
-    }
+      if (ModalRoute.of(_contexts.last).isActive) return _contexts.last;
+    } catch (e) {}
+    _contexts.removeLast();
     return _getMessageObject();
   }
 
@@ -88,95 +88,115 @@ class _SlimMessageObject extends ChangeNotifier {
   void update() => notifyListeners();
 
   void clearMessage() {
-    if (!dissmisable || messageType == _MessageType.Snackbar) return;
-    message = null;
-    update();
+    if (!dissmisable && messageType != _MessageType.Snackbar) return;
+    _slimMessageStream.clear();
   }
 
   void forceClearOverlay() {
     dissmisable = true;
-    clearMessage();
+    _slimMessageStream.clear();
   }
+}
+
+class _SlimMessageStream {
+  StreamController<_SlimMessageObject> streamController =
+      StreamController<_SlimMessageObject>.broadcast();
+
+  void close() => streamController.close();
+
+  Stream<_SlimMessageObject> get stream => streamController.stream;
+
+  _SlimMessageObject currentMessage;
+
+  bool get hasMessage =>
+      currentMessage != null &&
+      currentMessage.messageType != _MessageType.Snackbar &&
+      currentMessage.message != null;
+
+  void show(_SlimMessageObject _slimMessageObject) {
+    currentMessage = _slimMessageObject;
+    streamController.sink.add(currentMessage);
+  }
+
+  void clear() => show(null);
+
+  bool get dissmisable => currentMessage == null || currentMessage.dissmisable;
 }
 
 class _SlimMessage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    final stateObject = context.slim<_SlimMessageObject>();
+  Widget build(BuildContext context) => StreamBuilder<_SlimMessageObject>(
+      stream: _slimMessageStream.stream,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return SizedBox(height: 0);
 
-    if (stateObject.message == null) return SizedBox(height: 0);
+        final messageObject = snapshot.data;
 
-    if (stateObject.messageType == _MessageType.Snackbar) {
-      Future.delayed(
-        Duration.zero,
-        () {
-          Scaffold.of(context).hideCurrentSnackBar();
-          Scaffold.of(context).showSnackBar(SnackBar(
-            duration: Duration(seconds: 2),
-            content: Text(
-              stateObject.message,
-              style: stateObject.messageTextStyle,
+        if (messageObject.messageType == _MessageType.Snackbar) {
+          Future.delayed(
+            Duration.zero,
+            () {
+              Scaffold.of(context).hideCurrentSnackBar();
+              Scaffold.of(context).showSnackBar(SnackBar(
+                duration: Duration(seconds: 2),
+                content: Text(
+                  messageObject.message,
+                  style: messageObject.messageTextStyle,
+                ),
+                backgroundColor: messageObject.messageBackgroundColor,
+              ));
+            },
+          );
+          return SizedBox(height: 0);
+        }
+
+        return GestureDetector(
+          onTap: messageObject.clearMessage,
+          child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: Colors.black.withOpacity(.6),
+            child: GestureDetector(
+              onTap: () {},
+              child: Center(
+                child: messageObject.messageType == _MessageType.Overlay
+                    ? Container(
+                        decoration: BoxDecoration(
+                          color: messageObject.messageBackgroundColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          messageObject.message.toString(),
+                          style: messageObject.messageTextStyle,
+                        ),
+                      )
+                    : messageObject.message,
+              ),
             ),
-            backgroundColor: stateObject.messageBackgroundColor,
-          ));
-          stateObject.message = null;
-        },
-      );
-      return SizedBox(height: 0);
-    }
-
-    return GestureDetector(
-      onTap: stateObject.clearMessage,
-      child: Container(
-        height: double.infinity,
-        width: double.infinity,
-        color: Colors.black.withOpacity(.6),
-        child: GestureDetector(
-          onTap: () {},
-          child: Center(
-            child: stateObject.messageType == _MessageType.Overlay
-                ? Container(
-                    decoration: BoxDecoration(
-                      color: stateObject.messageBackgroundColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: EdgeInsets.all(20),
-                    child: Text(
-                      stateObject.message.toString(),
-                      style: stateObject.messageTextStyle,
-                    ),
-                  )
-                : stateObject.message,
           ),
-        ),
-      ),
-    );
-  }
+        );
+      });
 }
 
 extension SlimBuildContextMessagesX on BuildContext {
   void _showMessage(dynamic message, Color messageBackgroundColor,
       messageTextStyle, _MessageType messageType, bool dissmisable) {
-    final _slimMessageObject = slim<_SlimMessageObject>();
-    if (_slimMessageObject == null) return;
+    final _slimMessageObject = _SlimMessageObject();
     _slimMessageObject.message = message;
     _slimMessageObject.messageBackgroundColor = messageBackgroundColor;
     _slimMessageObject.messageTextStyle = messageTextStyle;
     _slimMessageObject.messageType = messageType;
     _slimMessageObject.dissmisable = dissmisable;
-    _slimMessageObject.update();
+    _slimMessageStream.show(_slimMessageObject);
   }
 
   void forceClearMessage() {
-    final _slimMessageObject = slim<_SlimMessageObject>();
-    if (_slimMessageObject == null) return;
-    _slimMessageObject.forceClearOverlay();
+    _slimMessageStream.clear();
   }
 
   void clearMessage() {
-    final _slimMessageObject = slim<_SlimMessageObject>();
-    if (_slimMessageObject == null) return;
-    _slimMessageObject.clearMessage();
+    if (_slimMessageStream.dissmisable) forceClearMessage();
   }
 
   void showWidget(Widget widget, {bool dissmiable = true}) =>
@@ -194,4 +214,6 @@ extension SlimBuildContextMessagesX on BuildContext {
           messageTextStyle = const TextStyle(color: Colors.white)}) =>
       _showMessage(message, messageBackgroundColor, messageTextStyle,
           _MessageType.Snackbar, false);
+
+  bool get hasMessage => _slimMessageStream.hasMessage;
 }

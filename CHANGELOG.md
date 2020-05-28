@@ -1,3 +1,7 @@
+## [2.0.3]
+
+making messages stream based
+
 ## [2.0.0]
 
 introducing extensions, SlimMaterialAppBuilder, SlimBuilder, SlimObject, SlimLocalizations

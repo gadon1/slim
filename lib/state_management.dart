@@ -9,9 +9,6 @@ class Slim<T> extends InheritedNotifier<ChangeNotifier> {
       (context.dependOnInheritedWidgetOfExactType<Slim<T>>().notifier
               as _SlimNotifier)
           .stateObject;
-
-  @override
-  bool updateShouldNotify(InheritedNotifier<ChangeNotifier> oldWidget) => true;
 }
 
 class _SlimNotifier extends ChangeNotifier {

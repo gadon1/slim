@@ -14,6 +14,9 @@ class Counter extends SlimObject {
     updateUI(); //update state
   }
 
+  //access to current context
+  moveToPage(Widget page) => page.push(context);
+
   //show overlay with widget in center of screen
   testWidget() => showWidget(Container(
         height: 250,

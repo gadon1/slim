@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'state_management.dart';
+import 'builders.dart';
 
 extension SlimStringX on String {
   bool get isNullOrEmpty => (this ?? '').isEmpty;
@@ -27,7 +28,9 @@ extension SlimBuildContextContextX on BuildContext {
   double get width => MediaQuery.of(this).size.width;
   double get height => MediaQuery.of(this).size.height;
   NavigatorState get navigator => Navigator.of(this);
-  void pop<T>({T result}) => navigator.pop<T>(result);
+  void pop<T>({T result}) =>
+      hasMessage ? forceClearMessage() : navigator.pop<T>(result);
+
   Future<T> push<T>(Route<T> route) => navigator.push<T>(route);
   Future<T> pushReplacement<T>(Route<T> route) =>
       navigator.pushReplacement(route);

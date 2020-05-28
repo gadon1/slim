@@ -1,6 +1,6 @@
 name: slim
 description: super light state management out of the box. Easy way to work with ChangeNotifier or any other model class.
-version: 2.0.2
+version: 2.0.3
 homepage: https://github.com/gadon1/slim
 
 environment:
@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  http:
 
 dev_dependencies:
   flutter_test:
