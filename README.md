@@ -17,7 +17,7 @@ Easy app level configuration will gives you 'ready to use' localization and UI m
 
 1. **App class constructor**
    This is the place to set your supported locales and if you want also set your own `SlimLocaleLoader`
-   The default `SlimLocaleLoader` will load you locale files from - assets/locales/ so make sure you created folder and files matching to youר supported locales
+   The default `SlimLocaleLoader` will load you locale files from - assets/locales/ so make sure you created folder and files matching your supported locales
    and add it to pubspec.yaml file.
 
 2. **MaterialApp builder**
