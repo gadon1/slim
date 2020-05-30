@@ -1,3 +1,7 @@
+## [2.1.0]
+
+adding SlimObject.updateCurrent to update current widget and avoid updating all widgets referenced to it
+
 ## [2.0.9]
 
 typos and some internal classes made private

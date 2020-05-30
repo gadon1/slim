@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'extensions.dart';
 import 'dart:async';
+import 'state_management.dart';
 
 _SlimMessageStream _slimMessageStream = _SlimMessageStream();
 
@@ -11,10 +12,20 @@ class SlimBuilder<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stateObject = context.slim<T>();
-    if (stateObject is SlimObject) stateObject._addContext(context);
+    if (stateObject is SlimObject) {
+      return Slim<_CurrSlim>(
+        stateObject: _CurrSlim(),
+        child: Builder(builder: (ctx) {
+          stateObject._addContext(ctx);
+          return SlimBuilder<_CurrSlim>(builder: (_) => builder(stateObject));
+        }),
+      );
+    }
     return builder(stateObject);
   }
 }
+
+class _CurrSlim extends ChangeNotifier {}
 
 class SlimMaterialAppBuilder {
   static Widget builder(BuildContext context, Widget child) =>
@@ -38,6 +49,7 @@ class _SlimMaterialAppBuilder extends StatelessWidget {
 }
 
 abstract class SlimObject extends ChangeNotifier {
+  void updateCurrentUI() => context?.slim<_CurrSlim>()?.notifyListeners();
   void updateUI() => notifyListeners();
 
   BuildContext _getMessageObject() {
