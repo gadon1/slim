@@ -49,8 +49,9 @@ class _SlimMaterialAppBuilder extends StatelessWidget {
 }
 
 abstract class SlimObject extends ChangeNotifier {
-  void updateCurrentUI() => context?.slim<_CurrSlim>()?.notifyListeners();
-  void updateUI() => notifyListeners();
+  void updateUI({bool current = false}) => current
+      ? context?.slim<_CurrSlim>()?.notifyListeners()
+      : notifyListeners();
 
   BuildContext _getMessageObject() {
     if (_contexts.isEmpty) return null;

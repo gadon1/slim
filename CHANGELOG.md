@@ -1,6 +1,10 @@
+## [2.1.1]
+
+adding SlimObject.updateUI({bool local=false}) so you can choose updating current widget or updating all widgets referenced to it
+
 ## [2.1.0]
 
-adding SlimObject.updateCurrent to update current widget and avoid updating all widgets referenced to it
+adding ability to update current widget and avoid updating all widgets referenced to it
 
 ## [2.0.9]
 
