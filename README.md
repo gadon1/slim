@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/gadon1/slim/master/slim.png" alt="" width="50"/>
+
 # slim - app essentials
 
 **slim** was written to give some app essentials and capabilities that are common for most apps.
@@ -35,9 +37,9 @@ import 'package:slim/slim.dart';
 class MyApp extends StatelessWidget{
 	MyApp(){
 		SlimLocalizations.supportedLocales = [Locale('en', 'US')];
-		//if you want to customize you locale loader just create
-		//class that extends SlimLocaleLoader and change:
-		//SlimLocalizations.slimLocaleLoader= YouCustomLocalLoader();
+		/// If you want to customize you locale loader just create class that extends SlimLocaleLoader and change:
+    ///
+		/// SlimLocalizations.slimLocaleLoader= YouCustomLocalLoader();
 	}
 
 	@override
@@ -240,8 +242,6 @@ Widget build(BuildContext context){
 }
 ```
 
-\
-
 ## Useful Extensions
 
 **slim** provides some useful extension methods for several classes (some of them mentioned previously).
@@ -315,11 +315,11 @@ exapmle for login service:
 class LoginService extends RestApi {
   LoginService() : super("http://myserver.com/api");
 
-  //POST http://myserver.com/api/login
+  /// POST http://myserver.com/api/login
   Future<RestApiResult> login(User user) =>
       post("login", {"userName": user.userName, "password": user.password});
 
-  //POST http://myserver.com/api/logout
+  /// POST http://myserver.com/api/logout
   Future<RestApiResult> logout(User user) =>
       post("logout", {"userName": user.userName});
 }
@@ -359,7 +359,8 @@ class User{
 3. LoginService class
 
 ```dart
-class LoginService extends RestApi { //extends slim RestApi class
+/// Extends slim RestApi class
+class LoginService extends RestApi {
   LoginService() : super("http://myserver.com/api");
 
   Future<RestApiResult> login(User user) =>
@@ -373,25 +374,36 @@ class LoginService extends RestApi { //extends slim RestApi class
 4. LoginBloc class - Business logic
 
 ```dart
-class LoginBloc extends SlimObject { //extends slim SlimObject class
+/// Extends slim SlimObject class
+class LoginBloc extends SlimObject {
   badLogin(User user) async {
-    final loginService = context.slim<LoginService>(); //access login service via slim
-    context.showWidget(CircularProgressIndicator()); //using context access to display loading indicator
+    /// Access login service via slim
+    final loginService = context.slim<LoginService>();
+    /// Using context access to display loading indicator
+    context.showWidget(CircularProgressIndicator());
     final result = await loginService.login(user);
-    context.clearMessage(); //using context access to clear loading indicator
-    if (result.success) //checking slim RestApiResult for success
-      Home().pushReplacement(context); //using slim widget extension method to replace current screen to Home widget
+    /// Using context access to clear loading indicator
+    context.clearMessage();
+    /// Checking slim RestApiResult for success
+    if (result.success)
+      /// Using slim widget extension method to replace current screen to Home widget
+      Home().pushReplacement(context);
     else
-      context.showSnackBar(context.translate("badcreds"), //using context access to show a snackbar and locale translation
+      /// Using context access to show a snackbar and locale translation
+      context.showSnackBar(context.translate("badcreds"),
           messageBackgroundColor: Colors.red);
   }
 
   goodLogin(User user) async {
-    final loginService = context.slim<LoginService>(); //access login service via slim
-    context.showWidget(CircularProgressIndicator()); //using context access to display loading indicator
+    /// Access login service via slim
+    final loginService = context.slim<LoginService>();
+    /// Using context access to display loading indicator
+    context.showWidget(CircularProgressIndicator());
     await loginService.login(user);
-    context.clearMessage(); //using context access to clear loading indicator
-    Home().pushReplacement(context); //using slim widget extension method to replace current screen to Home widget
+    //Using context access to clear loading indicator
+    context.clearMessage();
+    /// Using slim widget extension method to replace current screen to Home widget
+    Home().pushReplacement(context);
   }
 }
 ```
@@ -401,26 +413,33 @@ class LoginBloc extends SlimObject { //extends slim SlimObject class
 ```dart
 class MyApp extends StatelessWidget {
   MyApp() {
-    SlimLocalizations.supportedLocales = [Locale('en', 'US')]; //set slim supported locales
+    /// Set slim supported locales
+    SlimLocalizations.supportedLocales = [Locale('en', 'US')];
   }
 
   @override
   Widget build(BuildContext context) {
     return [
-      Slimer<User>(User()), //putting single instance of Userat the top of the tree
-      Slimer<LoginService>(LoginService()),   //putting single instance of LoginService at the top of the tree
-      Slimer<LoginBloc>(LoginBloc()), //putting single instance of LoginBloc at the top of the tree
+      /// Putting single instance of Userat the top of the tree
+      Slimer<User>(User()),
+      /// Putting single instance of LoginService at the top of the tree
+      Slimer<LoginService>(LoginService()),
+      /// Putting single instance of LoginBloc at the top of the tree
+      Slimer<LoginBloc>(LoginBloc()),
     ].slim(
       child: MaterialApp(
-        builder: SlimMaterialAppBuilder.builder, //configure material app builder for slim UI messages support
+        /// Configure material app builder for slim UI messages support
+        builder: SlimMaterialAppBuilder.builder,
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: Login(),
-        localizationsDelegates: SlimLocalizations.delegates,  //configure slim localizations delegates
-        supportedLocales: SlimLocalizations.supportedLocales, //configure slim localizations supported locales
+        /// Configure slim localizations delegates
+        localizationsDelegates: SlimLocalizations.delegates,
+        /// Configure slim localizations supported locales
+        supportedLocales: SlimLocalizations.supportedLocales,
       ),
     );
   }
@@ -433,14 +452,17 @@ class MyApp extends StatelessWidget {
 class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SlimBuilder<LoginBloc>( //using slim builder to access login bloc instance
+    /// Using slim builder to access login bloc instance
+    return SlimBuilder<LoginBloc>(
       builder: (loginBloc) {
-        final user = context.slim<User>(); //simple slim access to user instance
+        /// Simple slim access to user instance
+        final user = context.slim<User>();
         return Scaffold(
           backgroundColor: Colors.blue,
           body: Center(
             child: Container(
-              width: context.width * 0.8, //BuildContext extension method context.width = MediaQuery.of(context).size.width
+              /// BuildContext extension method context.width = MediaQuery.of(context).size.width
+              width: context.width * 0.8,
               child: Card(
                 elevation: 5,
                 child: Padding(
@@ -450,7 +472,8 @@ class Login extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       Text(
-                        context.translate("loginform"), //slim locale translation
+                        /// slim locale translation
+                        context.translate("loginform"),
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
@@ -477,13 +500,17 @@ class Login extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           FlatButton(
-                            child: Text(context.translate("badlogin")), //slim locale translation
-                            onPressed: () => loginBloc.badLogin(user), //using the bloc
+                            /// slim locale translation
+                            child: Text(context.translate("badlogin")),
+                            /// Using the bloc
+                            onPressed: () => loginBloc.badLogin(user),
                             color: Colors.pink,
                           ),
                           FlatButton(
-                            child: Text(context.translate("goodlogin")), //slim locale translation
-                            onPressed: () => loginBloc.goodLogin(user), //using the bloc
+                            /// slim locale translation
+                            child: Text(context.translate("goodlogin")),
+                            /// Using the bloc
+                            onPressed: () => loginBloc.goodLogin(user),
                             color: Colors.green,
                           )
                         ],
@@ -507,11 +534,13 @@ class Login extends StatelessWidget {
 class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return SlimBuilder<User>( //using slim builder to access user instance
+    /// Using slim builder to access user instance
+    return SlimBuilder<User>(
       builder: (user) => Scaffold(
         backgroundColor: Colors.lightBlue,
         body: Center(
-          child: Text("${context.translate("hi")} ${user.userName}"), //using slim locale translation and user instance
+          /// Using slim locale translation and user instance
+          child: Text("${context.translate("hi")} ${user.userName}"),
         ),
       ),
     );
@@ -519,8 +548,8 @@ class Home extends StatelessWidget {
 }
 ```
 
-\*\*Example above is available in example tab and git.
-\
-Comments & suggestions are most welcome.
-\
-Enjoy !\*\*
+**Example above is available in example tab and git.**
+
+**Comments & suggestions are most welcome.**
+
+**Enjoy !**
