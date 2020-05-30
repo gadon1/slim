@@ -10,7 +10,7 @@ abstract class SlimLocaleLoader {
   String translate(String key) => key;
 }
 
-class DefaultSlimLocaleLoader extends SlimLocaleLoader {
+class _DefaultSlimLocaleLoader extends SlimLocaleLoader {
   Map<String, String> _localizedStrings;
   @override
   Future<bool> load() async {
@@ -32,7 +32,7 @@ class DefaultSlimLocaleLoader extends SlimLocaleLoader {
 }
 
 class SlimLocalizations {
-  static SlimLocaleLoader slimLocaleLoader = DefaultSlimLocaleLoader();
+  static SlimLocaleLoader slimLocaleLoader = _DefaultSlimLocaleLoader();
 
   static List<Locale> supportedLocales = [];
 
