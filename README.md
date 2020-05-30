@@ -154,13 +154,13 @@ By using the `SlimObject` from one side and `SlimBuilder` on the other, you get 
 **SlimObject**\
 abstract class that can be used for state management or logic, inherits from [ChangeNotifier](https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html) and gives you widget rebuild options:\
 `updateUI({bool current = false})` - will refresh the state of all / current widgets that reference it (current update flag workd only if you access it via `SlimBuilder` widget).\
-The `SlimObject` has context propery to access the current context so you can use context extensions from inside a business login class interacting with UI:
+The `SlimObject` has context propery to access the current context so you can use context extensions from inside a business login class interacting with UI:\
 `context.showOverlay` - display overlay text message\
 `context.showWidget` - display overlay widget\
 `context.showSnackBar` - display snackbar with given text\
 `context.clearMessage` - clears overlays
 
-For overlay message and snackbar you can set background color and text style.
+For overlay message and snackbar you can set background color and text style.\
 For overlay message and widget you can set dismissable flag.
 \
 \
@@ -322,8 +322,8 @@ class LoginService extends RestApi {
 
 ## Full Example
 
-This final section describes a full sample that combines most of **slim** app essentials package.\
-All of **slim** usage has remarks.
+This final section describes a full example that combines most of **slim** app essentials package.\
+All of **slim** usage is remarked.
 
 ```dart
 import 'package:slim/slim.dart';
