@@ -1,3 +1,15 @@
+## [2.1.4]
+
+Expanded(documentaion)
+
+## [2.1.3]
+
+Expanded(documentaion)
+
+## [2.1.2]
+
+Expanded(documentaion)
+
 ## [2.1.1]
 
 adding SlimObject.updateUI({bool local=false}) so you can choose updating current widget or updating all widgets referenced to it

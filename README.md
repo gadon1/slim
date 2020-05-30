@@ -109,11 +109,13 @@ Widget build(BuildContext context) => Column(children:[
 		),
 		FlatButton(
 			 child:Text('show widget'),
-			 onPressed:() => context.showWidget(Container(
-												 height: 100,
-												 widgth: 100,
-												 color: Colors.black
-											 )),
+			 onPressed:() => context.showWidget(
+                 Container(
+				    height: 100,
+					widgth: 100,
+					color: Colors.black
+				),
+            ),
 		),
 	],
 );
@@ -244,14 +246,14 @@ Widget build(BuildContext context){
 **slim** provides some useful extension methods for several classes (some of them mentioned previously).
 The full extension methods are:
 
-**`String`**
-`bool isNullOrEmpty`
+**`String`**\
+`bool isNullOrEmpty`\
 `bool isNotNullOrEmpty`
 
-**`BuildContext`**
-`bool hasMessage` - true if any overlay currently displayed
-`void clearMessage()` - clears current overlay message if dismissable
-`void forceClearMessage()` - clears current overlay message even if not dismissable
+**`BuildContext`**\
+`bool hasMessage` - true if any overlay currently displayed\
+`void clearMessage()` - clears current overlay message if dismissable\
+`void forceClearMessage()` - clears current overlay message even if not dismissable\
 `void showWidget(Widget widget, {bool dismissable = true})`
 
 ```
@@ -264,20 +266,20 @@ void  showSnackBar(String message,{Color messageBackgroundColor = Colors.black,
 messageTextStyle = const  TextStyle(color: Colors.white)})
 ```
 
-`T slim<T>()` - access a state object of type T
-`double width` - media query width
-`double height` - media query height
-`NavigatorState navigator` - navigator state
-`void pop<T>({T result})` - navigator pop
-`Future<T> push<T>(Route<T> route)` - navigator push
-`Future<T> pushReplacement<T>(Route<T> route)` - navigator pushReplacement
-`void popTop()` - navigator pop till can't pop anymore
-`String translate(String key)` - locale translation of key
+`T slim<T>()` - access a state object of type T\
+`double width` - media query width\
+`double height` - media query height\
+`NavigatorState navigator` - navigator state\
+`void pop<T>({T result})` - navigator pop\
+`Future<T> push<T>(Route<T> route)` - navigator push\
+`Future<T> pushReplacement<T>(Route<T> route)` - navigator pushReplacement\
+`void popTop()` - navigator pop till can't pop anymore\
+`String translate(String key)` - locale translation of key\
 `TextDirection textDirection` - current locale text direction
 
-**`Widget`**
-`Future<T> push<T>(BuildContext context)` - navigator push
-`Future<T> pushReplacement<T>(BuildContext context)` - navigator pushReplacement
+**`Widget`**\
+`Future<T> push<T>(BuildContext context)` - navigator push\
+`Future<T> pushReplacement<T>(BuildContext context)` - navigator pushReplacement\
 `Future<T> pushTop<T>(BuildContext context)` - push at navigators most top
 
 ## RestApi
