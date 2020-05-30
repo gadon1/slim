@@ -2,144 +2,153 @@ import 'package:flutter/material.dart';
 import 'package:slim/slim.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
-}
-
-//slim object for state management +
-class Counter extends SlimObject {
-  int value = 0;
-  inc() {
-    value++;
-    updateUI(); //update state
-  }
-
-  //access to current context
-  moveToPage(Widget page) => page.push(context);
-
-  //slim messages supported in SlimObject and BuildContext
-
-  //show overlay with widget in center of screen
-  testWidget() => showWidget(Container(
-        height: 250,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.blue,
-        ),
-        child: Center(child: Text("value is: $value")),
-      ));
-
-  //show overlay with Text in center of screen
-  testOverlay() =>
-      showOverlay("value is: $value", messageBackgroundColor: Colors.red);
-
-  //show snackbar with text
-  testSnack() =>
-      showSnackBar("value is: $value", messageBackgroundColor: Colors.red);
 }
 
 class MyApp extends StatelessWidget {
   MyApp() {
-    //set up supported locales
-    SlimLocalizations.supportedLocales = [
-      const Locale('en', 'US'),
-      const Locale('he', 'IL'),
-    ];
-
-    //you can create custom slim localizations
-    //SlimLocalizations.slimLocaleLoader = CustomSlimLocalizations();
+    SlimLocalizations.supportedLocales = [Locale('en', 'US')];
   }
 
   @override
   Widget build(BuildContext context) {
-    return [Slimer<Counter>(Counter())].slim(
-        //putting state/bloc objects in the tree using extensions, there are more then one way putting it there
-        child: MaterialApp(
-      builder: SlimMaterialAppBuilder.builder, //to support slim messages
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return [
+      Slimer<User>(User()),
+      Slimer<LoginService>(LoginService()),
+      Slimer<LoginBloc>(LoginBloc()),
+    ].slim(
+      child: MaterialApp(
+        builder: SlimMaterialAppBuilder.builder,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: Login(),
+        localizationsDelegates: SlimLocalizations.delegates,
+        supportedLocales: SlimLocalizations.supportedLocales,
       ),
-      localizationsDelegates:
-          SlimLocalizations.delegates, //set localizations delegates
-      supportedLocales:
-          SlimLocalizations.supportedLocales, //set supported locales
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    ));
+    );
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class User {
+  String userName;
+  String password;
+}
 
-  final String title;
+class LoginService extends RestApi {
+  LoginService() : super("http://myserver.com/api");
 
+  Future<RestApiResult> login(User user) =>
+      post("login", {"userName": user.userName, "password": user.password});
+
+  Future<RestApiResult> logout(User user) =>
+      post("logout", {"userName": user.userName});
+}
+
+class LoginBloc extends SlimObject {
+  badLogin(User user) async {
+    final loginService = context.slim<LoginService>();
+    context.showWidget(CircularProgressIndicator());
+    final result = await loginService.login(user);
+    context.clearMessage();
+    if (result.success)
+      Home().pushReplacement(context);
+    else
+      context.showSnackBar(context.translate("badcreds"),
+          messageBackgroundColor: Colors.red);
+  }
+
+  goodLogin(User user) async {
+    final loginService = context.slim<LoginService>();
+    context.showWidget(CircularProgressIndicator());
+    await loginService.login(user);
+    context.clearMessage();
+    Home().pushReplacement(context);
+  }
+}
+
+class Login extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => SlimBuilder<Counter>(
-        //top of the page access
-        builder: (counter) => Scaffold(
-          appBar: AppBar(
-            title: Text(title),
-          ),
+  Widget build(BuildContext context) {
+    return SlimBuilder<LoginBloc>(
+      builder: (loginBloc) {
+        final user = context.slim<User>();
+        return Scaffold(
+          backgroundColor: Colors.blue,
           body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                //if you use default locaization for locale files stored at assets/locales/ you can translate like this
-                Text(context.translate("hi")),
-                Text(
-                  'You have pushed the button this many times:',
+            child: Container(
+              width: context.width * 0.8,
+              child: Card(
+                elevation: 5,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        context.translate("loginform"),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 20),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: "Username",
+                          alignLabelWithHint: true,
+                        ),
+                        initialValue: user.userName,
+                        onChanged: (value) => user.userName = value,
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: "Password",
+                          alignLabelWithHint: true,
+                        ),
+                        initialValue: user.password,
+                        onChanged: (value) => user.password = value,
+                        obscureText: true,
+                      ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          FlatButton(
+                            child: Text(context.translate("badlogin")),
+                            onPressed: () => loginBloc.badLogin(user),
+                            color: Colors.pink,
+                          ),
+                          FlatButton(
+                            child: Text(context.translate("goodlogin")),
+                            onPressed: () => loginBloc.goodLogin(user),
+                            color: Colors.green,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                SlimBuilder<Counter>(
-                  //local access (just for eample) for counter up the tree - you can wrap the scaffold with the slim builder instead
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
 
-                  builder: (cnt) => Text(
-                    '${cnt.value}',
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ),
-                FlatButton(
-                  child: Text("next page"),
-                  onPressed: () => MyHomePage(title: "Hi").push(context),
-                  color: Colors.blue,
-                ),
-                SlimBuilder<Counter>(
-                  builder: (cnt) => FlatButton(
-                    child: Text("test overlay"),
-                    onPressed:
-                        cnt.testOverlay, //showing slim message from SlimObject
-                    color: Colors.yellow,
-                  ),
-                ),
-                SlimBuilder<Counter>(
-                  builder: (cnt) => FlatButton(
-                    child: Text("test snack"),
-                    onPressed: () => context.showSnackBar(
-                        "snack bar from context",
-                        messageBackgroundColor:
-                            Colors.red), //showing slim message from context
-                    color: Colors.red,
-                  ),
-                ),
-                SlimBuilder<Counter>(
-                  builder: (cnt) => FlatButton(
-                    child: Text("test widget"),
-                    onPressed: cnt.testWidget,
-                    color: Colors.pink,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          floatingActionButton: SlimBuilder<Counter>(
-            builder: (c2) => FloatingActionButton(
-              heroTag: "main",
-              onPressed: c2.inc,
-              tooltip: 'Increment',
-              child: Icon(Icons.add),
-            ),
-          ),
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SlimBuilder<User>(
+      builder: (user) => Scaffold(
+        backgroundColor: Colors.lightBlue,
+        body: Center(
+          child: Text("${context.translate("hi")} ${user.userName}"),
         ),
-      );
+      ),
+    );
+  }
 }
