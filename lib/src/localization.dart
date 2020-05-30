@@ -9,6 +9,25 @@ abstract class SlimLocaleLoader {
   String translate(String key) => key;
 }
 
+class SlimLocalizations {
+  static SlimLocaleLoader slimLocaleLoader = _DefaultSlimLocaleLoader();
+
+  static List<Locale> supportedLocales = [];
+
+  static List<LocalizationsDelegate> delegates = [
+    _SlimLocalizationsDelegate(),
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+  ];
+
+  SlimLocalizations(Locale locale) {
+    slimLocaleLoader.locale = locale;
+  }
+
+  Future<bool> load() => slimLocaleLoader.load();
+}
+
 class _DefaultSlimLocaleLoader extends SlimLocaleLoader {
   Map<String, String> _localizedStrings;
   @override
@@ -30,25 +49,6 @@ class _DefaultSlimLocaleLoader extends SlimLocaleLoader {
       _localizedStrings[key] ?? "[${key.toUpperCase()}]";
 }
 
-class SlimLocalizations {
-  static SlimLocaleLoader slimLocaleLoader = _DefaultSlimLocaleLoader();
-
-  static List<Locale> supportedLocales = [];
-
-  static List<LocalizationsDelegate> delegates = [
-    _SlimLocalizationsDelegate(),
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-  ];
-
-  SlimLocalizations(Locale locale) {
-    slimLocaleLoader.locale = locale;
-  }
-
-  Future<bool> load() => slimLocaleLoader.load();
-}
-
 class _SlimLocalizationsDelegate
     extends LocalizationsDelegate<SlimLocalizations> {
   @override
@@ -64,13 +64,4 @@ class _SlimLocalizationsDelegate
 
   @override
   bool shouldReload(_SlimLocalizationsDelegate old) => false;
-}
-
-extension SlimLocalizationX on BuildContext {
-  String translate(String key) =>
-      SlimLocalizations.slimLocaleLoader.translate(key);
-
-  TextDirection get textDirection =>
-      Localizations.of<WidgetsLocalizations>(this, WidgetsLocalizations)
-          .textDirection;
 }

@@ -22,12 +22,12 @@ class SlimBuilder<T> extends StatelessWidget {
   }
 }
 
-class _CurrSlim extends ChangeNotifier {}
-
 class SlimMaterialAppBuilder {
   static Widget builder(BuildContext context, Widget child) =>
       _SlimMaterialAppBuilder(child);
 }
+
+class _CurrSlim extends ChangeNotifier {}
 
 _SlimMessageObject _msg = _SlimMessageObject();
 
@@ -71,25 +71,6 @@ abstract class SlimObject extends ChangeNotifier {
   }
 
   BuildContext get context => _getContext();
-
-  void showWidget(Widget widget, {bool dismissable = true}) =>
-      context?.showWidget(widget, dismissable: dismissable);
-
-  void showOverlay(String message,
-          {Color messageBackgroundColor = Colors.black,
-          bool dismissable = true,
-          messageTextStyle = const TextStyle(color: Colors.white)}) =>
-      context?.showOverlay(message,
-          messageBackgroundColor: messageBackgroundColor,
-          messageTextStyle: messageTextStyle,
-          dismissable: dismissable);
-
-  void showSnackBar(String message,
-          {Color messageBackgroundColor = Colors.black,
-          messageTextStyle = const TextStyle(color: Colors.white)}) =>
-      context?.showSnackBar(message,
-          messageBackgroundColor: messageBackgroundColor,
-          messageTextStyle: messageTextStyle);
 }
 
 enum _MessageType { Overlay, Snackbar, Widget }
@@ -102,12 +83,35 @@ class _SlimMessageObject extends ChangeNotifier {
   Widget widget;
   bool dismissable;
 
-  void update() => notifyListeners();
+  Future<bool> _onWillPop() async {
+    if (message == null) return true;
+    message = null;
+    notifyListeners();
+    return false;
+  }
+
+  void showMessage(
+      BuildContext context,
+      dynamic message,
+      Color messageBackgroundColor,
+      messageTextStyle,
+      _MessageType messageType,
+      bool dismissable) {
+    this.message = message;
+    this..messageBackgroundColor = messageBackgroundColor;
+    this.messageTextStyle = messageTextStyle;
+    this.messageType = messageType;
+    this.dismissable = dismissable;
+    notifyListeners();
+    final route = ModalRoute.of(context);
+    route?.removeScopedWillPopCallback(_onWillPop);
+    route?.addScopedWillPopCallback(_onWillPop);
+  }
 
   void clearMessage() {
     if (!dismissable && messageType != _MessageType.Snackbar) return;
     message = null;
-    update();
+    notifyListeners();
   }
 
   void forceClearOverlay() {
@@ -173,26 +177,11 @@ class _SlimMessage extends StatelessWidget {
   }
 }
 
-Future<bool> _onWillPop() async {
-  if (_msg.message == null) return true;
-  _msg.message = null;
-  _msg.update();
-  return false;
-}
-
 extension SlimBuildContextMessagesX on BuildContext {
   void _showMessage(dynamic message, Color messageBackgroundColor,
-      messageTextStyle, _MessageType messageType, bool dismissable) {
-    _msg.message = message;
-    _msg.messageBackgroundColor = messageBackgroundColor;
-    _msg.messageTextStyle = messageTextStyle;
-    _msg.messageType = messageType;
-    _msg.dismissable = dismissable;
-    _msg.update();
-    final route = ModalRoute.of(this);
-    route?.removeScopedWillPopCallback(_onWillPop);
-    route?.addScopedWillPopCallback(_onWillPop);
-  }
+          messageTextStyle, _MessageType messageType, bool dismissable) =>
+      _msg.showMessage(this, message, messageBackgroundColor, messageTextStyle,
+          messageType, dismissable);
 
   void forceClearMessage() => _msg.forceClearOverlay();
 

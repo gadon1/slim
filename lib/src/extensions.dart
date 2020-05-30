@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'localization.dart';
 import 'state_management.dart';
 
 extension SlimStringX on String {
@@ -29,4 +30,11 @@ extension SlimBuildContextContextX on BuildContext {
   void popTop() {
     while (navigator.canPop()) navigator.pop();
   }
+
+  String translate(String key) =>
+      SlimLocalizations.slimLocaleLoader.translate(key);
+
+  TextDirection get textDirection =>
+      Localizations.of<WidgetsLocalizations>(this, WidgetsLocalizations)
+          .textDirection;
 }

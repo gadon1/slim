@@ -159,6 +159,7 @@ The `SlimObject` has context propery to access the current context so you can us
 `context.showWidget` - display overlay widget\
 `context.showSnackBar` - display snackbar with given text\
 `context.clearMessage` - clears overlays
+**context will be available only when using `SlimBuilder`**
 
 For overlay message and snackbar you can set background color and text style.\
 For overlay message and widget you can set dismissable flag.
