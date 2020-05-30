@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'extensions.dart';
 
 const String applicationJSON = "application/json; charset=UTF-8";
+const String contentType = "content-type";
 
 enum RestApiMethod { GET, POST, PUT, DELETE }
 
@@ -12,7 +12,7 @@ abstract class RestApi {
   RestApi(this.serverUrl);
 
   Map<String, String> createHeaders(RestApiMethod method, {String extra}) =>
-      {HttpHeaders.contentTypeHeader: applicationJSON};
+      {contentType: applicationJSON};
 
   Future<RestApiResult> get(String serviceUrl, {String extra}) =>
       _get(serviceUrl, RestApiMethod.GET, extra: extra);
