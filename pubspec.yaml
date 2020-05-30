@@ -1,6 +1,6 @@
 name: slim
 description: app essentials - state managment, usefull extensions, snackbar, overlay and widget messages, localizations, rest api and more
-version: 2.1.4
+version: 2.1.5
 homepage: https://github.com/gadon1/slim
 
 environment:

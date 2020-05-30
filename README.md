@@ -202,10 +202,9 @@ MultiSlim via `List<Slimer>` extension method:
 [Slimer<Counter>(Counter())].slim(child:someWidget);
 ```
 
-'
 **Access slim objects in the tree**
 
-SlimBuilder - Recommended
+SlimBuilder - allows for `updateUI(current:true)`
 
 ```dart
 @override
@@ -219,7 +218,7 @@ Widget build(BuildContext context){
 }
 ```
 
-Simple Access
+Simple Access - can't do `updateUI(current:true)`
 
 ```dart
 @override
