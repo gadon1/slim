@@ -84,8 +84,8 @@ Widget build(BuildContext context) => Text(context.translate('welcome'));
 
 ## UI Messages
 
-UI Messages caps are available via `BuildContext` extension methods. Since `SlimObject` accessed by `SlimBuilder` has access to current context those caps are also available inside it.That will be explained in the **State Management** section below.
-You can display overlay with your own widget,text message and a snackbar.
+UI Messages caps are available via `BuildContext` extension methods. Since `SlimObject` accessed by `SlimBuilder` has an access to current context, these caps are also available inside it. That will be explained in the **State Management** section below.
+You can display overlay with your own widget, text message and a snackbar.
 
 ```dart
 showWidget(Widget widget, {bool dissmiable = true})
@@ -124,7 +124,7 @@ Widget build(BuildContext context) => Column(children:[
 );
 ```
 
-For text overlay and snackbar you can set the background color and text style.
+For text overlay and snackbar you can set the background color and text style.\
 For overlay of text or widget you can specify if dismissable.
 
 ## State Management
@@ -151,21 +151,21 @@ By using the `SlimObject` from one side and `SlimBuilder` on the other, you get 
 
 3. Separate & not disconnected business logic - The `SlimObject` accessed by `SlimBuilder` allows you to separate the business from UI but gives access to current context. That gives you that ability to combine navigation flows and use the UI messages inside your business class.
 
-**SlimObject**
-abstract class that can be used for state management or logic, inherits from [ChangeNotifier](https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html) and gives you widget rebuild options:
-`updateUI({bool current = false})` - will refresh the state of all / current widgets that reference it (current update is only available if you access it wilth a `SlimBuilder` widget).
+**SlimObject**\
+abstract class that can be used for state management or logic, inherits from [ChangeNotifier](https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html) and gives you widget rebuild options:\
+`updateUI({bool current = false})` - will refresh the state of all / current widgets that reference it (current update flag workd only if you access it via `SlimBuilder` widget).\
 The `SlimObject` has context propery to access the current context so you can use context extensions from inside a business login class interacting with UI:
-`context.showOverlay` - display overlay text message
-`context.showWidget` - display overlay widget
-`context.showSnackBar` - display snackbar with given text
+`context.showOverlay` - display overlay text message\
+`context.showWidget` - display overlay widget\
+`context.showSnackBar` - display snackbar with given text\
 `context.clearMessage` - clears overlays
 
-For overlay message and snackbar can set background color and text style.
+For overlay message and snackbar you can set background color and text style.
 For overlay message and widget you can set dismissable flag.
 \
 \
-**Putting objects in the tree**
-For following example we will use a simple Counter class:
+**Putting objects in the tree**\
+For the following example we will use a simple Counter class:
 
 ```dart
 class Counter extends SlimObject{
@@ -202,7 +202,7 @@ MultiSlim via `List<Slimer>` extension method:
 
 **Access slim objects in the tree**
 
-SlimBuilder - allows for `updateUI(current:true)`
+SlimBuilder - allows `updateUI(current:true)`
 
 ```dart
 @override
@@ -239,7 +239,7 @@ Widget build(BuildContext context){
 ## Useful Extensions
 
 **slim** provides some useful extension methods for several classes (some of them mentioned previously).
-The full extension methods are:
+The full extension methods list is:
 
 **`String`**\
 `bool isNullOrEmpty`\
@@ -279,9 +279,9 @@ messageTextStyle = const  TextStyle(color: Colors.white)})
 
 ## RestApi
 
-**`RestApi`** is an abstract class that gives you get, delete, post, put methods for fast service writing. The `RestApi` class constructor gets the server url,
-and its methods gets the service url and some additional data.
-`RestApi` class has a `createHeaders` method that can be overriden.
+**`RestApi`** is an abstract class that gives you rest (get, delete, post, put) methods for fast service writing.\
+The `RestApi` class constructor gets the server url, and its methods gets the service url and some additional data.\
+`RestApi` class has a `createHeaders` method that can be overriden.\
 `RestApi` methods wrapped in try/catch clause and returns `RestApiResult` object.
 
 ```dart
@@ -322,7 +322,7 @@ class LoginService extends RestApi {
 
 ## Full Example
 
-In this final section i'll describe a quick sample that combines most of the **slim** app essentials package.
+This final section describes a full sample that combines most of **slim** app essentials package.\
 All of **slim** usage has remarks.
 
 ```dart
