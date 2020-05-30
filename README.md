@@ -548,8 +548,8 @@ class Home extends StatelessWidget {
 }
 ```
 
-**Example above is available in example tab and git.**
+**The Example available in example tab and git.**
 
-**Comments & suggestions are most welcome.**
+**Would love to get comments & suggestions.**
 
 **Enjoy !**
