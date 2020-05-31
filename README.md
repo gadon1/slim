@@ -155,10 +155,11 @@ By using the `SlimObject` from one side and `SlimBuilder` on the other, you get 
 abstract class that can be used for state management or logic, inherits from [ChangeNotifier](https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html) and gives you widget rebuild options:\
 `updateUI({bool current = false})` - will refresh the state of all / current widgets that reference it (current update flag workd only if you access it via `SlimBuilder` widget).\
 The `SlimObject` has context propery to access the current context so you can use context extensions from inside a business login class interacting with UI:\
-`context.showOverlay` - display overlay text message\
-`context.showWidget` - display overlay widget\
-`context.showSnackBar` - display snackbar with given text\
-`context.clearMessage` - clears overlays
+`showOverlay` - display overlay text message\
+`showWidget` - display overlay widget\
+`showSnackBar` - display snackbar with given text\
+`clearMessage` - clears overlays\
+`forceClearMessage` - clears overlays even if not dismissable
 **context will be available only when using `SlimBuilder`**
 
 For overlay message and snackbar you can set background color and text style.\
@@ -283,10 +284,10 @@ messageTextStyle = const  TextStyle(color: Colors.white)})
 **`RestApi`** is an abstract class that gives you rest (get, delete, post, put) methods for fast service writing.\
 The `RestApi` class constructor gets the server url, and its methods gets the service url and some additional data.\
 `RestApi` class has a `createHeaders` method that can be overriden.\
-`RestApi` methods wrapped in try/catch clause and returns `RestApiResult` object.
+`RestApi` methods wrapped in try/catch clause and returns `RestApiResponse` object.
 
 ```dart
-class RestApiResult {
+class RestApiResponse {
   bool get success => statusCode == 200 || statusCode == 201;
   int statusCode;
   String body;
@@ -296,7 +297,7 @@ class RestApiResult {
   int milliseconds;
   String get error => body.isNullOrEmpty ? exception : body;
 
-  RestApiResult(this.url, this.method, this.statusCode, this.milliseconds);
+  RestApiResponse(this.url, this.method, this.statusCode, this.milliseconds);
 
   @override
   String toString() => "$method [$statusCode] [$error] ${milliseconds}ms";
@@ -311,11 +312,11 @@ class LoginService extends RestApi {
   LoginService() : super("http://myserver.com/api");
 
   /// POST http://myserver.com/api/login
-  Future<RestApiResult> login(User user) =>
+  Future<RestApiResponse> login(User user) =>
       post("login", {"userName": user.userName, "password": user.password});
 
   /// POST http://myserver.com/api/logout
-  Future<RestApiResult> logout(User user) =>
+  Future<RestApiResponse> logout(User user) =>
       post("logout", {"userName": user.userName});
 }
 
@@ -358,10 +359,10 @@ class User{
 class LoginService extends RestApi {
   LoginService() : super("http://myserver.com/api");
 
-  Future<RestApiResult> login(User user) =>
+  Future<RestApiResponse> login(User user) =>
       post("login", {"userName": user.userName, "password": user.password});
 
-  Future<RestApiResult> logout(User user) =>
+  Future<RestApiResponse> logout(User user) =>
       post("logout", {"userName": user.userName});
 }
 ```
@@ -375,17 +376,17 @@ class LoginBloc extends SlimObject {
     /// Access login service via slim
     final loginService = context.slim<LoginService>();
     /// Using context access to display loading indicator
-    context.showWidget(CircularProgressIndicator());
+    showWidget(CircularProgressIndicator());
     final result = await loginService.login(user);
     /// Using context access to clear loading indicator
-    context.clearMessage();
+    clearMessage();
     /// Checking slim RestApiResult for success
     if (result.success)
       /// Using slim widget extension method to replace current screen to Home widget
       Home().pushReplacement(context);
     else
       /// Using context access to show a snackbar and locale translation
-      context.showSnackBar(context.translate("badcreds"),
+      showSnackBar(context.translate("badcreds"),
           messageBackgroundColor: Colors.red);
   }
 
@@ -393,10 +394,10 @@ class LoginBloc extends SlimObject {
     /// Access login service via slim
     final loginService = context.slim<LoginService>();
     /// Using context access to display loading indicator
-    context.showWidget(CircularProgressIndicator());
+    showWidget(CircularProgressIndicator());
     await loginService.login(user);
     //Using context access to clear loading indicator
-    context.clearMessage();
+    clearMessage();
     /// Using slim widget extension method to replace current screen to Home widget
     Home().pushReplacement(context);
   }

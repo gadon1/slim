@@ -40,31 +40,31 @@ class User {
 class LoginService extends RestApi {
   LoginService() : super("http://myserver.com/api");
 
-  Future<RestApiResult> login(User user) =>
+  Future<RestApiResponse> login(User user) =>
       post("login", {"userName": user.userName, "password": user.password});
 
-  Future<RestApiResult> logout(User user) =>
+  Future<RestApiResponse> logout(User user) =>
       post("logout", {"userName": user.userName});
 }
 
 class LoginBloc extends SlimObject {
   badLogin(User user) async {
     final loginService = context.slim<LoginService>();
-    context.showWidget(CircularProgressIndicator());
+    showWidget(CircularProgressIndicator());
     final result = await loginService.login(user);
-    context.clearMessage();
+    clearMessage();
     if (result.success)
       Home().pushReplacement(context);
     else
-      context.showSnackBar(context.translate("badcreds"),
+      showSnackBar(context.translate("badcreds"),
           messageBackgroundColor: Colors.red);
   }
 
   goodLogin(User user) async {
     final loginService = context.slim<LoginService>();
-    context.showWidget(CircularProgressIndicator());
+    showWidget(CircularProgressIndicator());
     await loginService.login(user);
-    context.clearMessage();
+    clearMessage();
     Home().pushReplacement(context);
   }
 }
