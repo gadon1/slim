@@ -1,3 +1,7 @@
+## [3.2.1]
+
+documentation update
+
 ## [3.2.0]
 
 build fix

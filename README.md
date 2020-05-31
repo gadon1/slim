@@ -273,7 +273,8 @@ messageTextStyle = const  TextStyle(color: Colors.white)})
 `Future<T> pushReplacement<T>(Route<T> route)` - navigator pushReplacement\
 `void popTop()` - navigator pop till can't pop anymore\
 `String translate(String key)` - locale translation of key\
-`TextDirection textDirection` - current locale text direction
+`TextDirection textDirection` - current locale text direction\
+`void closeKeyboard()` - request focuse
 
 **`Widget`**\
 `Future<T> push<T>(BuildContext context)` - navigator push\
@@ -377,17 +378,17 @@ class LoginBloc extends SlimObject {
     /// Access login service via slim
     final loginService = context.slim<LoginService>();
     /// Using context access to display loading indicator
-    showWidget(CircularProgressIndicator());
+    context.showWidget(CircularProgressIndicator());
     final result = await loginService.login(user);
     /// Using context access to clear loading indicator
-    clearMessage();
+    context.clearMessage();
     /// Checking slim RestApiResult for success
     if (result.success)
       /// Using slim widget extension method to replace current screen to Home widget
       Home().pushReplacement(context);
     else
       /// Using context access to show a snackbar and locale translation
-      showSnackBar(context.translate("badcreds"),
+      context.showSnackBar(context.translate("badcreds"),
           messageBackgroundColor: Colors.red);
   }
 
@@ -395,10 +396,10 @@ class LoginBloc extends SlimObject {
     /// Access login service via slim
     final loginService = context.slim<LoginService>();
     /// Using context access to display loading indicator
-    showWidget(CircularProgressIndicator());
+    context.showWidget(CircularProgressIndicator());
     await loginService.login(user);
     //Using context access to clear loading indicator
-    clearMessage();
+    context.clearMessage();
     /// Using slim widget extension method to replace current screen to Home widget
     Home().pushReplacement(context);
   }
