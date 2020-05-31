@@ -159,7 +159,7 @@ The `SlimObject` has context propery to access the current context so you can us
 `showWidget` - display overlay widget\
 `showSnackBar` - display snackbar with given text\
 `clearMessage` - clears overlays\
-`forceClearMessage` - clears overlays even if not dismissable
+`forceClearMessage` - clears overlays even if not dismissable\
 **context will be available only when using `SlimBuilder`**
 
 For overlay message and snackbar you can set background color and text style.\
