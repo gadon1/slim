@@ -74,6 +74,12 @@ abstract class SlimObject extends ChangeNotifier {
     if (_contexts.indexOf(context) < 0) _contexts.add(context);
   }
 
+  /// Clear UI messages even if not dismissable
+  void forceClearMessage() => context?.forceClearMessage();
+
+  /// Clear UI messages if not dismissable
+  void clearMessage() => context?.clearMessage();
+
   /// Get the current context - works only if consumed by [SlimBuilder]
   BuildContext get context => _getContext();
 
