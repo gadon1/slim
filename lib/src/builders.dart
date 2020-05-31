@@ -71,6 +71,25 @@ abstract class SlimObject extends ChangeNotifier {
   }
 
   BuildContext get context => _getContext();
+
+  void showWidget(Widget widget, {bool dismissable = true}) =>
+      context?.showWidget(widget, dismissable: dismissable);
+
+  void showOverlay(String message,
+          {Color messageBackgroundColor = Colors.black,
+          bool dismissable = true,
+          messageTextStyle = const TextStyle(color: Colors.white)}) =>
+      context?.showOverlay(message,
+          messageBackgroundColor: messageBackgroundColor,
+          messageTextStyle: messageTextStyle,
+          dismissable: dismissable);
+
+  void showSnackBar(String message,
+          {Color messageBackgroundColor = Colors.black,
+          messageTextStyle = const TextStyle(color: Colors.white)}) =>
+      context?.showSnackBar(message,
+          messageBackgroundColor: messageBackgroundColor,
+          messageTextStyle: messageTextStyle);
 }
 
 enum _MessageType { Overlay, Snackbar, Widget }
