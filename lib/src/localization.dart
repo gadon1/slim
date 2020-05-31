@@ -3,29 +3,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+/// Locale resource loader
 abstract class SlimLocaleLoader {
-  Locale locale;
+  Locale _locale;
+
+  /// Current OS locale
+  Locale get locale => _locale;
+
+  /// Load locales resources
   Future<bool> load();
+
+  /// Translate locales resources
   String translate(String key) => key;
 }
 
+/// Localization configurations
 class SlimLocalizations {
+  /// Locales loader
   static SlimLocaleLoader slimLocaleLoader = _DefaultSlimLocaleLoader();
 
+  /// Supported Locales
   static List<Locale> supportedLocales = [];
 
-  static List<LocalizationsDelegate> delegates = [
-    _SlimLocalizationsDelegate(),
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-  ];
+  /// Localizations delegates
+  static List<LocalizationsDelegate> get delegates => [
+        _SlimLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ];
 
   SlimLocalizations(Locale locale) {
-    slimLocaleLoader.locale = locale;
+    slimLocaleLoader._locale = locale;
   }
 
-  Future<bool> load() => slimLocaleLoader.load();
+  Future<bool> _load() => slimLocaleLoader.load();
 }
 
 class _DefaultSlimLocaleLoader extends SlimLocaleLoader {
@@ -58,7 +70,7 @@ class _SlimLocalizationsDelegate
   @override
   Future<SlimLocalizations> load(Locale locale) async {
     SlimLocalizations localizations = SlimLocalizations(locale);
-    await localizations.load();
+    await localizations._load();
     return localizations;
   }
 

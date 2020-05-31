@@ -7,91 +7,75 @@ const String contentType = "content-type";
 
 enum RestApiMethod { GET, POST, PUT, DELETE }
 
+/// Abstract class to ease Rest api services writing
 abstract class RestApi {
+  /// The server main url
   final String serverUrl;
   RestApi(this.serverUrl);
 
+  /// Set request headers
   Map<String, String> createHeaders(RestApiMethod method, {String extra}) =>
       {contentType: applicationJSON};
 
-  Future<RestApiResult> get(String serviceUrl, {String extra}) =>
-      _get(serviceUrl, RestApiMethod.GET, extra: extra);
+  /// GET request to serverlUrl/serviceUrl, extra parametes passed to createHeaders method
+  Future<RestApiResponse> get(String serviceUrl, {String extra}) =>
+      _request(serviceUrl, RestApiMethod.GET, extra: extra);
 
-  Future<RestApiResult> delete(String serviceUrl, {String extra}) =>
-      _get(serviceUrl, RestApiMethod.DELETE, extra: extra);
+  /// DELETE request to serverlUrl/serviceUrl, extra parametes passed to createHeaders method
+  Future<RestApiResponse> delete(String serviceUrl, {String extra}) =>
+      _request(serviceUrl, RestApiMethod.DELETE, extra: extra);
 
-  Future<RestApiResult> post(String serviceUrl, dynamic body, {String extra}) =>
-      _post(serviceUrl, RestApiMethod.POST, body, extra: extra);
+  /// POST request to serverlUrl/serviceUrl, extra parametes passed to createHeaders method
+  Future<RestApiResponse> post(String serviceUrl, dynamic body,
+          {String extra}) =>
+      _request(serviceUrl, RestApiMethod.POST, body: body, extra: extra);
 
-  Future<RestApiResult> put(String serviceUrl, dynamic body, {String extra}) =>
-      _post(serviceUrl, RestApiMethod.PUT, body, extra: extra);
+  /// PUT request to serverlUrl/serviceUrl, extra parametes passed to createHeaders method
+  Future<RestApiResponse> put(String serviceUrl, dynamic body,
+          {String extra}) =>
+      _request(serviceUrl, RestApiMethod.PUT, body: body, extra: extra);
 
-  Future<RestApiResult> _get(String serviceUrl, RestApiMethod method,
-      {String extra}) async {
-    final url = "$serverUrl/$serviceUrl";
-    final st = Stopwatch()..start();
-    try {
-      print("$method $url");
-
-      final res = method == RestApiMethod.GET
-          ? await http.get(
-              url,
-              headers: createHeaders(method, extra: extra),
-            )
-          : method == RestApiMethod.DELETE
-              ? await http.delete(
-                  url,
-                  headers: createHeaders(method, extra: extra),
-                )
-              : throw UnsupportedError("method not supported");
-      st.stop();
-      final response =
-          RestApiResult(url, method, res.statusCode, st.elapsedMilliseconds)
-            ..body = res.body;
-      if (!response.success) response.exception = res.reasonPhrase;
-      print(response);
-      return response;
-    } catch (e) {
-      final response = RestApiResult(url, method, 500, st.elapsedMilliseconds)
-        ..exception = e.toString();
-      print(response);
-      return response;
+  Function _getCall(RestApiMethod method) {
+    switch (method) {
+      case RestApiMethod.POST:
+        return http.post;
+      case RestApiMethod.DELETE:
+        return http.delete;
+      case RestApiMethod.GET:
+        return http.get;
+      case RestApiMethod.PUT:
+        return http.put;
+      default:
+        throw UnsupportedError("rest method not supported");
     }
   }
 
-  Future<RestApiResult> _post(
-      String serviceUrl, RestApiMethod method, dynamic body,
-      {String extra}) async {
+  Future<RestApiResponse> _request(String serviceUrl, RestApiMethod method,
+      {dynamic body, String extra}) async {
     final url = "$serverUrl/$serviceUrl";
     final st = Stopwatch()..start();
+    final bool withBody = body != null;
     try {
-      final json = jsonEncode(body);
-      print("$method $url $json");
+      final call = _getCall(method);
 
-      final res = method == RestApiMethod.POST
-          ? await http.post(
-              url,
-              body: json,
-              headers: createHeaders(method, extra: extra),
-            )
-          : method == RestApiMethod.PUT
-              ? await http.put(
-                  url,
-                  body: json,
-                  headers: createHeaders(method, extra: extra),
-                )
-              : throw UnsupportedError("rest method not supported");
+      dynamic json = withBody ? jsonEncode(body) : null;
+
+      print("$method $url ${json ?? ''}");
+
+      final result = await (withBody
+          ? call(url, body: json, headers: createHeaders(method, extra: extra))
+          : call(url, headers: createHeaders(method, extra: extra)));
 
       st.stop();
-      final response =
-          RestApiResult(url, method, res.statusCode, st.elapsedMilliseconds)
-            ..body = res.body;
-      if (!response.success) response.exception = res.reasonPhrase;
+      final response = RestApiResponse(
+          url, method, result.statusCode, st.elapsedMilliseconds)
+        ..body = result.body;
+      if (!response.success) response.exception = result.reasonPhrase;
       print(response);
       return response;
     } catch (e) {
       st.stop();
-      final response = RestApiResult(url, method, 500, st.elapsedMilliseconds)
+      final response = RestApiResponse(url, method, 500, st.elapsedMilliseconds)
         ..exception = e.toString();
       print(response);
       return response;
@@ -99,17 +83,33 @@ abstract class RestApi {
   }
 }
 
-class RestApiResult {
+/// Rest api response object
+class RestApiResponse {
+  /// True if statusCode == 200 || statusCode == 201
   bool get success => statusCode == 200 || statusCode == 201;
+
+  /// Response status code
   int statusCode;
+
+  /// Response body
   String body;
+
+  /// Response exception - use error instead
   String exception;
+
+  /// Request Rest Method
   RestApiMethod method;
+
+  /// Request url
   String url;
+
+  /// Elapsed milliseconds
   int milliseconds;
+
+  /// Response error
   String get error => body.isNullOrEmpty ? exception : body;
 
-  RestApiResult(this.url, this.method, this.statusCode, this.milliseconds);
+  RestApiResponse(this.url, this.method, this.statusCode, this.milliseconds);
 
   @override
   String toString() => "$method [$statusCode] [$error] ${milliseconds}ms";
