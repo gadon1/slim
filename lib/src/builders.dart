@@ -3,6 +3,42 @@ import 'package:slim/slim.dart';
 import 'extensions.dart';
 import 'state_management.dart';
 
+/// Useful extension methods on [BuildContext]
+extension SlimBuildContextMessagesX on BuildContext {
+  void _showMessage(dynamic message, Color messageBackgroundColor,
+          messageTextStyle, _MessageType messageType, bool dismissable) =>
+      _msg.showMessage(this, message, messageBackgroundColor, messageTextStyle,
+          messageType, dismissable);
+
+  /// Clear UI messages even if not dismissable
+  void forceClearMessage() => _msg.forceClearOverlay();
+
+  /// Clear UI messages if not dismissable
+  void clearMessage() => _msg.clearMessage();
+
+  /// Show overlay widget
+  void showWidget(Widget widget, {bool dismissable = true}) =>
+      _showMessage(widget, null, null, _MessageType.Widget, dismissable);
+
+  /// Show overlay text
+  void showOverlay(String message,
+          {Color messageBackgroundColor = Colors.black,
+          bool dismissable = true,
+          messageTextStyle = const TextStyle(color: Colors.white)}) =>
+      _showMessage(message, messageBackgroundColor, messageTextStyle,
+          _MessageType.Overlay, dismissable);
+
+  /// Show snackbar
+  void showSnackBar(String message,
+          {Color messageBackgroundColor = Colors.black,
+          messageTextStyle = const TextStyle(color: Colors.white)}) =>
+      _showMessage(message, messageBackgroundColor, messageTextStyle,
+          _MessageType.Snackbar, false);
+
+  /// True if currently showing overlay
+  bool get hasMessage => _msg.hasMessage;
+}
+
 /// Recommended widget to consume [SlimObject]
 class SlimBuilder<T> extends StatelessWidget {
   final Widget Function(T stateObject) builder;
@@ -86,36 +122,8 @@ abstract class SlimObject extends ChangeNotifier {
     if (_contexts.indexOf(context) < 0) _contexts.add(context);
   }
 
-  /// Clear UI messages even if not dismissable
-  void forceClearMessage() => context?.forceClearMessage();
-
-  /// Clear UI messages if not dismissable
-  void clearMessage() => context?.clearMessage();
-
   /// Get the current context - works only if consumed by [SlimBuilder]
   BuildContext get context => _getContext();
-
-  /// Show overlay widget
-  void showWidget(Widget widget, {bool dismissable = true}) =>
-      context?.showWidget(widget, dismissable: dismissable);
-
-  /// Show overlay text
-  void showOverlay(String message,
-          {Color messageBackgroundColor = Colors.black,
-          bool dismissable = true,
-          messageTextStyle = const TextStyle(color: Colors.white)}) =>
-      context?.showOverlay(message,
-          messageBackgroundColor: messageBackgroundColor,
-          messageTextStyle: messageTextStyle,
-          dismissable: dismissable);
-
-  /// Show snackbar
-  void showSnackBar(String message,
-          {Color messageBackgroundColor = Colors.black,
-          messageTextStyle = const TextStyle(color: Colors.white)}) =>
-      context?.showSnackBar(message,
-          messageBackgroundColor: messageBackgroundColor,
-          messageTextStyle: messageTextStyle);
 }
 
 enum _MessageType { Overlay, Snackbar, Widget }
@@ -222,40 +230,4 @@ class _SlimMessage extends StatelessWidget {
       ),
     );
   }
-}
-
-/// Useful extension methods on [BuildContext]
-extension SlimBuildContextMessagesX on BuildContext {
-  void _showMessage(dynamic message, Color messageBackgroundColor,
-          messageTextStyle, _MessageType messageType, bool dismissable) =>
-      _msg.showMessage(this, message, messageBackgroundColor, messageTextStyle,
-          messageType, dismissable);
-
-  /// Clear UI messages even if not dismissable
-  void forceClearMessage() => _msg.forceClearOverlay();
-
-  /// Clear UI messages if not dismissable
-  void clearMessage() => _msg.clearMessage();
-
-  /// Show overlay widget
-  void showWidget(Widget widget, {bool dismissable = true}) =>
-      _showMessage(widget, null, null, _MessageType.Widget, dismissable);
-
-  /// Show overlay text
-  void showOverlay(String message,
-          {Color messageBackgroundColor = Colors.black,
-          bool dismissable = true,
-          messageTextStyle = const TextStyle(color: Colors.white)}) =>
-      _showMessage(message, messageBackgroundColor, messageTextStyle,
-          _MessageType.Overlay, dismissable);
-
-  /// Show snackbar
-  void showSnackBar(String message,
-          {Color messageBackgroundColor = Colors.black,
-          messageTextStyle = const TextStyle(color: Colors.white)}) =>
-      _showMessage(message, messageBackgroundColor, messageTextStyle,
-          _MessageType.Snackbar, false);
-
-  /// True if currently showing overlay
-  bool get hasMessage => _msg.hasMessage;
 }

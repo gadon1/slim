@@ -155,11 +155,11 @@ By using the `SlimObject` from one side and `SlimBuilder` on the other, you get 
 abstract class that can be used for state management or logic, inherits from [ChangeNotifier](https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html) and gives you widget rebuild options:\
 `updateUI({bool current = false})` - will refresh the state of all / current widgets that reference it (current update flag workd only if you access it via `SlimBuilder` widget).\
 The `SlimObject` has context propery to access the current context so you can use context extensions from inside a business login class interacting with UI:\
-`showOverlay` - display overlay text message\
-`showWidget` - display overlay widget\
-`showSnackBar` - display snackbar with given text\
-`clearMessage` - clears overlays\
-`forceClearMessage` - clears overlays even if not dismissable\
+`context.showOverlay` - display overlay text message\
+`context.showWidget` - display overlay widget\
+`context.showSnackBar` - display snackbar with given text\
+`context.clearMessage` - clears overlays\
+`context.forceClearMessage` - clears overlays even if not dismissable\
 **context will be available only when using `SlimBuilder`**
 
 For overlay message and snackbar you can set background color and text style.\
@@ -210,6 +210,7 @@ SlimBuilder - allows `updateUI(current:true)`
 @override
 Widget build(BuildContext context){
 	return SlimBuilder<Counter>(
+    [instance: optional local instance of Counter if you dont want to pre put it on tree]
 		builder:(counter){
 			...
 			return someWidget;
