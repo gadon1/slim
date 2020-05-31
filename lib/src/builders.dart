@@ -33,6 +33,10 @@ class _CurrSlim extends ChangeNotifier {}
 
 _SlimMessageObject _msg = _SlimMessageObject();
 
+class SlimMessage {
+  static get msg => _msg;
+}
+
 class _SlimMaterialAppBuilder extends StatelessWidget {
   final Widget child;
   _SlimMaterialAppBuilder(this.child);
@@ -136,9 +140,11 @@ class _SlimMessageObject extends ChangeNotifier {
     this.messageType = messageType;
     this.dismissable = dismissable;
     notifyListeners();
-    final route = ModalRoute.of(context);
-    route?.removeScopedWillPopCallback(_onWillPop);
-    route?.addScopedWillPopCallback(_onWillPop);
+    if (context != null) {
+      final route = ModalRoute.of(context);
+      route?.removeScopedWillPopCallback(_onWillPop);
+      route?.addScopedWillPopCallback(_onWillPop);
+    }
   }
 
   void clearMessage() {

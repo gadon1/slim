@@ -65,4 +65,7 @@ extension SlimBuildContextContextX on BuildContext {
   TextDirection get textDirection =>
       Localizations.of<WidgetsLocalizations>(this, WidgetsLocalizations)
           .textDirection;
+
+  /// Close keyboard
+  void closeKeyboard() => FocusScope.of(this).requestFocus(FocusNode());
 }
