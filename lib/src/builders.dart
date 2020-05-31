@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:slim/slim.dart';
 import 'extensions.dart';
 import 'state_management.dart';
 
 /// Recommended widget to consume [SlimObject]
 class SlimBuilder<T> extends StatelessWidget {
   final Widget Function(T stateObject) builder;
-  SlimBuilder({@required this.builder});
+  final T instance;
+  SlimBuilder({@required this.builder, this.instance});
 
   @override
   Widget build(BuildContext context) {
+    if (instance != null)
+      return Slim<T>(
+        child: SlimBuilder<T>(builder: builder),
+        stateObject: instance,
+      );
+
     final stateObject = context.slim<T>();
     if (stateObject is SlimObject) {
       return Slim<_CurrSlim>(
