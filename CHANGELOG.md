@@ -1,3 +1,7 @@
+## [3.2.6]
+
+- add closeKeyboard() to SlimObject
+
 ## [3.2.5]
 
 - slim access of dependOnInheritedWidgetOfExactType fallbacks to findAncestorWidgetOfExactType to enable initState access

@@ -123,29 +123,26 @@ abstract class SlimObject extends ChangeNotifier {
   BuildContext get context => _getContext();
 
   /// Show overlay widget
-  void showWidget(Widget widget, {bool dismissable = true}) => context != null
-      ? _msg.showMessage(
-          context, widget, null, null, _MessageType.Widget, dismissable)
-      : null;
+  void showWidget(Widget widget, {bool dismissable = true}) => _msg.showMessage(
+      context, widget, null, null, _MessageType.Widget, dismissable);
 
   /// Show overlay text
   void showOverlay(String message,
           {Color messageBackgroundColor = Colors.black,
           bool dismissable = true,
           messageTextStyle = const TextStyle(color: Colors.white)}) =>
-      context != null
-          ? _msg.showMessage(context, message, messageBackgroundColor,
-              messageTextStyle, _MessageType.Overlay, dismissable)
-          : null;
+      _msg.showMessage(context, message, messageBackgroundColor,
+          messageTextStyle, _MessageType.Overlay, dismissable);
 
   /// Show snackbar
   void showSnackBar(String message,
           {Color messageBackgroundColor = Colors.black,
           messageTextStyle = const TextStyle(color: Colors.white)}) =>
-      context != null
-          ? _msg.showMessage(context, message, messageBackgroundColor,
-              messageTextStyle, _MessageType.Snackbar, false)
-          : null;
+      _msg.showMessage(context, message, messageBackgroundColor,
+          messageTextStyle, _MessageType.Snackbar, false);
+
+  /// Close Keyboard by requesting focuse
+  void closeKeyboard() => context?.closeKeyboard();
 
   /// True if currently showing overlay
   bool get hasMessage => _msg.hasMessage;

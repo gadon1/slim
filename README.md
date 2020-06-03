@@ -155,14 +155,15 @@ By using the `SlimObject` from one side and `SlimBuilder` on the other, you get 
 abstract class that can be used for state management or logic, inherits from [ChangeNotifier](https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html) and gives you widget rebuild options:\
 `T slim<slim>()` - access to ancestor slims
 `updateUI({bool current = false})` - will refresh the state of all / current widgets that reference it (current update flag workd only if you access it via `SlimBuilder` widget).\
+`closeKeyBoard()` - close keyboard by requesting focuse
 The `SlimObject` has context propery to access the current context so you can use context extensions from inside a business login class interacting with UI:\
-
 `showOverlay` - display overlay text message\
 `showWidget` - display overlay widget\
 `showSnackBar` - display snackbar with given text\
 `clearMessage` - clears overlays\
 `forceClearMessage` - clears overlays even if not dismissable\
-**context will be available only when using `SlimBuilder`**
+
+**context available only when using `SlimBuilder`**
 
 For overlay message and snackbar you can set background color and text style.\
 For overlay message and widget you can set dismissable flag.
@@ -397,6 +398,8 @@ class LoginBloc extends SlimObject {
   goodLogin(User user) async {
     /// Access login service via slim
     final loginService = slim<LoginService>();
+    /// Close keyboard
+    closeKeyboard();
     /// Using context access to display loading indicator
     showWidget(CircularProgressIndicator(), dismissable:false);
     await loginService.login(user);
