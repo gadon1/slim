@@ -6,7 +6,7 @@ class Slim<T> extends InheritedNotifier<ChangeNotifier> {
       : super(child: child, notifier: _SlimNotifier(stateObject));
 
   static T of<T>(BuildContext context) =>
-      (context.dependOnInheritedWidgetOfExactType<Slim<T>>().notifier
+      (context.findAncestorWidgetOfExactType<Slim<T>>().notifier
               as _SlimNotifier)
           .stateObject;
 }

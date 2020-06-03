@@ -1,3 +1,8 @@
+## [3.2.2]
+
+- call UI messages directly from SlimObject (no need to use context extensions)
+- change slim access from dependOnInheritedWidgetOfExactType to findAncestorWidgetOfExactType to enable initState access
+
 ## [3.2.1]
 
 documentation update

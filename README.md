@@ -378,17 +378,17 @@ class LoginBloc extends SlimObject {
     /// Access login service via slim
     final loginService = context.slim<LoginService>();
     /// Using context access to display loading indicator
-    context.showWidget(CircularProgressIndicator());
+    showWidget(CircularProgressIndicator(), dismissable:false);
     final result = await loginService.login(user);
     /// Using context access to clear loading indicator
-    context.clearMessage();
+    forceClearMessage();
     /// Checking slim RestApiResult for success
     if (result.success)
       /// Using slim widget extension method to replace current screen to Home widget
       Home().pushReplacement(context);
     else
       /// Using context access to show a snackbar and locale translation
-      context.showSnackBar(context.translate("badcreds"),
+      showSnackBar(context.translate("badcreds"),
           messageBackgroundColor: Colors.red);
   }
 
@@ -396,10 +396,10 @@ class LoginBloc extends SlimObject {
     /// Access login service via slim
     final loginService = context.slim<LoginService>();
     /// Using context access to display loading indicator
-    context.showWidget(CircularProgressIndicator());
+    showWidget(CircularProgressIndicator(), dismissable:false);
     await loginService.login(user);
     //Using context access to clear loading indicator
-    context.clearMessage();
+    clearMessage();
     /// Using slim widget extension method to replace current screen to Home widget
     Home().pushReplacement(context);
   }
