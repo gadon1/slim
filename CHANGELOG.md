@@ -1,3 +1,7 @@
+## [3.2.3]
+
+- forceClearMessage & clearMessage for SlimObject
+
 ## [3.2.2]
 
 - call UI messages directly from SlimObject (no need to use context extensions)

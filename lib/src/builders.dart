@@ -147,6 +147,12 @@ abstract class SlimObject extends ChangeNotifier {
 
   /// True if currently showing overlay
   bool get hasMessage => _msg.hasMessage;
+
+  /// Clear UI messages if not dismissable
+  void clearMessage() => _msg.clearMessage();
+
+  /// Clear UI messages even if not dismissable
+  void forceClearMessage() => _msg.forceClearMessage();
 }
 
 enum _MessageType { Overlay, Snackbar, Widget }
