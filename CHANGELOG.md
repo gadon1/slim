@@ -1,3 +1,7 @@
+## [3.2.5]
+
+- slim access of dependOnInheritedWidgetOfExactType fallbacks to findAncestorWidgetOfExactType to enable initState access
+
 ## [3.2.4]
 
 - T slim<T>() for SlimObject
