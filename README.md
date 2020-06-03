@@ -153,13 +153,15 @@ By using the `SlimObject` from one side and `SlimBuilder` on the other, you get 
 
 **SlimObject**\
 abstract class that can be used for state management or logic, inherits from [ChangeNotifier](https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html) and gives you widget rebuild options:\
+`T slim<slim>()` - access to ancestor slims
 `updateUI({bool current = false})` - will refresh the state of all / current widgets that reference it (current update flag workd only if you access it via `SlimBuilder` widget).\
 The `SlimObject` has context propery to access the current context so you can use context extensions from inside a business login class interacting with UI:\
-`context.showOverlay` - display overlay text message\
-`context.showWidget` - display overlay widget\
-`context.showSnackBar` - display snackbar with given text\
-`context.clearMessage` - clears overlays\
-`context.forceClearMessage` - clears overlays even if not dismissable\
+
+`showOverlay` - display overlay text message\
+`showWidget` - display overlay widget\
+`showSnackBar` - display snackbar with given text\
+`clearMessage` - clears overlays\
+`forceClearMessage` - clears overlays even if not dismissable\
 **context will be available only when using `SlimBuilder`**
 
 For overlay message and snackbar you can set background color and text style.\
@@ -376,7 +378,7 @@ class LoginService extends RestApi {
 class LoginBloc extends SlimObject {
   badLogin(User user) async {
     /// Access login service via slim
-    final loginService = context.slim<LoginService>();
+    final loginService = slim<LoginService>();
     /// Using context access to display loading indicator
     showWidget(CircularProgressIndicator(), dismissable:false);
     final result = await loginService.login(user);
@@ -394,7 +396,7 @@ class LoginBloc extends SlimObject {
 
   goodLogin(User user) async {
     /// Access login service via slim
-    final loginService = context.slim<LoginService>();
+    final loginService = slim<LoginService>();
     /// Using context access to display loading indicator
     showWidget(CircularProgressIndicator(), dismissable:false);
     await loginService.login(user);

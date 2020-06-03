@@ -1,3 +1,7 @@
+## [3.2.4]
+
+- T slim<T>() for SlimObject
+
 ## [3.2.3]
 
 - forceClearMessage & clearMessage for SlimObject
