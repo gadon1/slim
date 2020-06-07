@@ -1,3 +1,7 @@
+## [3.2.7]
+
+- changing Slim to statefulwidget to keep state during hot reload
+
 ## [3.2.6]
 
 - add closeKeyboard() to SlimObject

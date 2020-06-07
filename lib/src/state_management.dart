@@ -1,21 +1,45 @@
 import 'package:flutter/material.dart';
 
-/// [InhertiedNotifier] with special state object wrapping
-class Slim<T> extends InheritedNotifier<ChangeNotifier> {
-  Slim({@required Widget child, @required T stateObject})
-      : super(child: child, notifier: _SlimNotifier(stateObject));
+/// [Slim] statefull widget with special inherited notifier state object wrapping
+class Slim<T> extends StatefulWidget {
+  final Widget child;
+  final T stateObject;
+  Slim({@required this.child, @required this.stateObject});
+
+  @override
+  _SlimState<T> createState() => _SlimState<T>();
 
   static T of<T>(BuildContext context) {
     try {
-      return (context.dependOnInheritedWidgetOfExactType<Slim<T>>().notifier
-              as _SlimNotifier)
+      return (context
+              .dependOnInheritedWidgetOfExactType<_SlimInhertiedNotifier<T>>()
+              .notifier as _SlimNotifier)
           .stateObject;
     } catch (e) {
-      return (context.findAncestorWidgetOfExactType<Slim<T>>().notifier
-              as _SlimNotifier)
+      return (context
+              .findAncestorWidgetOfExactType<_SlimInhertiedNotifier<T>>()
+              .notifier as _SlimNotifier)
           .stateObject;
     }
   }
+}
+
+class _SlimInhertiedNotifier<T> extends InheritedNotifier<ChangeNotifier> {
+  _SlimInhertiedNotifier({@required Widget child, @required T stateObject})
+      : super(child: child, notifier: _SlimNotifier(stateObject));
+}
+
+class _SlimState<T> extends State<Slim<T>> {
+  T _stateObject;
+  @override
+  void initState() {
+    super.initState();
+    _stateObject = widget.stateObject;
+  }
+
+  @override
+  Widget build(BuildContext context) =>
+      _SlimInhertiedNotifier<T>(child: widget.child, stateObject: _stateObject);
 }
 
 class _SlimNotifier extends ChangeNotifier {
