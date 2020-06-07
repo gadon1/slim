@@ -233,6 +233,7 @@ class _SlimMessage extends StatelessWidget {
             ),
             backgroundColor: messageObject.messageBackgroundColor,
           ));
+          messageObject.message = null;
         },
       );
       return SizedBox(height: 0);

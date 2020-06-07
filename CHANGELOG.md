@@ -1,3 +1,11 @@
+## [3.2.9]
+
+- clear snackbar message after displaying to avaoid showing it again on hot reload
+
+## [3.2.8]
+
+- adding to SlimObject init & dispose methods to call in matching Slim state (can be overriden)
+
 ## [3.2.8]
 
 - adding to SlimObject init & dispose methods to call in matching Slim state (can be overriden)
