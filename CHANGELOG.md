@@ -1,3 +1,7 @@
+## [3.3.0]
+
+- changed SlimObject init & dispose methods to onInit & onDispose
+
 ## [3.2.9]
 
 - clear snackbar message after displaying to avaoid showing it again on hot reload

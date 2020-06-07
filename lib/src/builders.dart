@@ -114,10 +114,8 @@ abstract class SlimObject extends ChangeNotifier {
 
   T slim<T>() => context?.slim<T>();
 
-  void init() {}
-  void dispose() {
-    super.dispose();
-  }
+  void onInit() {}
+  void onDispose() {}
 
   _addContext(BuildContext context) {
     if (_contexts.indexOf(context) < 0) _contexts.add(context);

@@ -36,13 +36,13 @@ class _SlimState<T> extends State<Slim<T>> {
   void initState() {
     super.initState();
     _stateObject = widget.stateObject;
-    if (_stateObject is SlimObject) (_stateObject as SlimObject).init();
+    if (_stateObject is SlimObject) (_stateObject as SlimObject).onInit();
   }
 
   @override
   void dispose() {
     super.dispose();
-    if (_stateObject is SlimObject) (_stateObject as SlimObject).dispose();
+    if (_stateObject is SlimObject) (_stateObject as SlimObject).onDispose();
   }
 
   @override
