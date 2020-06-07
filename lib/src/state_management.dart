@@ -41,8 +41,8 @@ class _SlimState<T> extends State<Slim<T>> {
 
   @override
   void dispose() {
-    super.dispose();
     if (_stateObject is SlimObject) (_stateObject as SlimObject).onDispose();
+    super.dispose();
   }
 
   @override

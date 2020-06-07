@@ -1,3 +1,7 @@
+## [3.3.1]
+
+- publish on 1.17.2 stable channel
+
 ## [3.3.0]
 
 - changed SlimObject init & dispose methods to onInit & onDispose
