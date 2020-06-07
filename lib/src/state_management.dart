@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'builders.dart';
 
 /// [Slim] statefull widget with special inherited notifier state object wrapping
 class Slim<T> extends StatefulWidget {
@@ -35,6 +36,13 @@ class _SlimState<T> extends State<Slim<T>> {
   void initState() {
     super.initState();
     _stateObject = widget.stateObject;
+    if (_stateObject is SlimObject) (_stateObject as SlimObject).init();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    if (_stateObject is SlimObject) (_stateObject as SlimObject).dispose();
   }
 
   @override

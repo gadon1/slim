@@ -1,3 +1,7 @@
+## [3.2.8]
+
+- adding to SlimObject init & dispose methods to call in matching Slim state (can be overriden)
+
 ## [3.2.7]
 
 - changing Slim to statefulwidget to keep state during hot reload

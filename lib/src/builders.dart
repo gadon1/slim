@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:slim/slim.dart';
 import 'extensions.dart';
 import 'state_management.dart';
 
@@ -115,6 +114,11 @@ abstract class SlimObject extends ChangeNotifier {
 
   T slim<T>() => context?.slim<T>();
 
+  void init() {}
+  void dispose() {
+    super.dispose();
+  }
+
   _addContext(BuildContext context) {
     if (_contexts.indexOf(context) < 0) _contexts.add(context);
   }
@@ -123,35 +127,38 @@ abstract class SlimObject extends ChangeNotifier {
   BuildContext get context => _getContext();
 
   /// Show overlay widget
-  void showWidget(Widget widget, {bool dismissable = true}) => _msg.showMessage(
-      context, widget, null, null, _MessageType.Widget, dismissable);
+  void showWidget(Widget widget, {bool dismissable = true}) =>
+      context?.showWidget(widget, dismissable: dismissable);
 
   /// Show overlay text
   void showOverlay(String message,
           {Color messageBackgroundColor = Colors.black,
           bool dismissable = true,
           messageTextStyle = const TextStyle(color: Colors.white)}) =>
-      _msg.showMessage(context, message, messageBackgroundColor,
-          messageTextStyle, _MessageType.Overlay, dismissable);
+      context?.showOverlay(message,
+          messageBackgroundColor: messageBackgroundColor,
+          dismissable: dismissable,
+          messageTextStyle: messageTextStyle);
 
   /// Show snackbar
   void showSnackBar(String message,
           {Color messageBackgroundColor = Colors.black,
           messageTextStyle = const TextStyle(color: Colors.white)}) =>
-      _msg.showMessage(context, message, messageBackgroundColor,
-          messageTextStyle, _MessageType.Snackbar, false);
+      context?.showSnackBar(message,
+          messageBackgroundColor: messageBackgroundColor,
+          messageTextStyle: messageTextStyle);
 
   /// Close Keyboard by requesting focuse
   void closeKeyboard() => context?.closeKeyboard();
 
   /// True if currently showing overlay
-  bool get hasMessage => _msg.hasMessage;
+  bool get hasMessage => context?.hasMessage ?? false;
 
   /// Clear UI messages if not dismissable
-  void clearMessage() => _msg.clearMessage();
+  void clearMessage() => context?.clearMessage();
 
   /// Clear UI messages even if not dismissable
-  void forceClearMessage() => _msg.forceClearMessage();
+  void forceClearMessage() => context?.forceClearMessage();
 }
 
 enum _MessageType { Overlay, Snackbar, Widget }
