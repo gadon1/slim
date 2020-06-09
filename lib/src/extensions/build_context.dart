@@ -75,8 +75,8 @@ extension SlimBuildContextContextX on BuildContext {
   }
 
   /// Get current locale translation by key
-  String translate(String key) =>
-      SlimLocalizations.slimLocaleLoader.translate(key);
+  String translate(String key, [String group]) =>
+      SlimLocalizations.slimLocaleLoader.translate(key, group);
 
   /// Get OS locale text direction
   TextDirection get textDirection =>

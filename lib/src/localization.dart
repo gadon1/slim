@@ -14,7 +14,7 @@ abstract class SlimLocaleLoader {
   Future<bool> load();
 
   /// Translate locales resources
-  String translate(String key) => key;
+  String translate(String key, [String group]) => key;
 }
 
 /// Localization configurations
@@ -57,7 +57,7 @@ class _DefaultSlimLocaleLoader extends SlimLocaleLoader {
   }
 
   @override
-  String translate(String key) =>
+  String translate(String key, [String group]) =>
       _localizedStrings[key] ?? "[${key.toUpperCase()}]";
 }
 

@@ -10,7 +10,7 @@ class TestLocalization extends SlimLocaleLoader {
   Future<bool> load() async => true;
 
   @override
-  String translate(String key) => translations[key] ?? "";
+  String translate(String key, [String group]) => translations[key] ?? "";
 }
 
 void main() {

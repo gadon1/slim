@@ -68,7 +68,7 @@ You can use `BuildContext` extension method to get your locale text direction `c
 
 **Translation**\
 If you didn't provide any custom `SlimLocaleLoader` , Your localization would be configured with a default one. The default `SlimLocaleLoader` expects locale files to be in _- assets/locales/_ folder with name convention of your locale. for example _- assets/locales/en.json_.
-The default locale file format is a single level json that holds you translation.
+The default locale file format is a single level json that holds you translation. You can extends `SlimLocaleLoader` to your own.
 
 ```json
 {
@@ -280,7 +280,7 @@ messageTextStyle = const  TextStyle(color: Colors.white), Color overlayColor = C
 `Future<T> push<T>(Route<T> route)` - navigator push\
 `Future<T> pushReplacement<T>(Route<T> route)` - navigator pushReplacement\
 `void popTop()` - navigator pop till can't pop anymore\
-`String translate(String key)` - locale translation of key\
+`String translate(String key,[String group])` - locale translation of key\
 `TextDirection textDirection` - current locale text direction\
 `void closeKeyboard()` - request focuse
 

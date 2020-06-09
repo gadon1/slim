@@ -1,3 +1,9 @@
+## [4.1.6]
+
+Localization:
+
+- add optional group parameter to enable 2-level json locale file in `SlimLocaleLoader` and `context.translate(String key, [String group])` extension method
+
 ## [4.1.5]
 
 - update(readme)
