@@ -154,7 +154,7 @@ By using the `SlimObject` from one side and `SlimBuilder` on the other, you get 
 **SlimObject**\
 abstract class that can be used for state management or logic, inherits from [ChangeNotifier](https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html) and gives you widget rebuild options:\
 `T slim<slim>()` - access to ancestor slims
-`updateUI({bool current = false})` - will refresh the state of all / current widgets that reference it (current update flag workd only if you access it via `SlimBuilder` widget).\
+`updateUI({bool current = false})` - will refresh the state of all / current widgets that reference it (current update flag workd only if you access it via [SlimBuilder] widget).\
 `closeKeyBoard()` - close keyboard by requesting focuse
 The `SlimObject` has context propery to access the current context so you can use context extensions from inside a business login class interacting with UI:\
 `showOverlay` - display overlay text message\
@@ -163,7 +163,11 @@ The `SlimObject` has context propery to access the current context so you can us
 `clearOverlay` - clears overlays\
 `forceClearOverlay` - clears overlays even if not dismissible\
 
-**context available only when using `SlimBuilder`**
+**SlimAppStateObject**\
+abstract class that inherits from [SlimObject] and recieves AppLifecycleState events. the events change recieves only if the [SlimStateObject]
+is accessed in the current app's screen. [SlimAppStateObject] force to override its `void onAppStateChanged(AppLifecycleState state)` method.\
+
+**[SlimAppStateObject] must be access via [SlimBuilder], [SlimObject] access via [SlimBuilder] is optinal but recommended**
 
 For overlay message and snackbar you can set background color, text style, overlay color and overlay opacity.\
 For overlay message and widget you can set dismissible flag.
