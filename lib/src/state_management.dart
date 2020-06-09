@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'object.dart';
 
-/// [Slim] statefull widget with special inherited notifier state object wrapping
+/// [Slim] StatefulWidget with special inherited notifier state object wrapping
 class Slim<T> extends StatefulWidget {
   final Widget child;
   final T stateObject;
