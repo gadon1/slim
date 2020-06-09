@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:slim/slim.dart';
+import '../lib/slim.dart';
 
 class TestApp extends StatelessWidget {
   @override

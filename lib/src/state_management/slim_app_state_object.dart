@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'object.dart';
+import 'slim_object.dart';
 
 /// Abstract class for recommended state object that gets AppLifecycleState events
 abstract class SlimAppStateObject extends SlimObject

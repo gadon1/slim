@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../localization.dart';
-import '../state_management.dart';
 import '../message.dart';
+import '../state_management/slim.dart';
 
 /// Useful extension methods on [BuildContext]
 extension SlimBuildContextContextX on BuildContext {

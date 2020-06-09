@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'extensions.dart';
-import 'builders.dart';
+import '../extensions/build_context.dart';
+import 'curr_slim.dart';
 
 /// Abstract class for recommended state object
 abstract class SlimObject extends ChangeNotifier {

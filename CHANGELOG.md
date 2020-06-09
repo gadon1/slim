@@ -1,3 +1,7 @@
+## [4.1.2]
+
+- code polish
+
 ## [4.1.1]
 
 - update(tests)

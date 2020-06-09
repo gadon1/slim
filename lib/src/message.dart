@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'extensions/buid_context.dart';
+import 'extensions/build_context.dart';
 
 SlimMessageObject msg = SlimMessageObject();
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'buid_context.dart';
+import 'build_context.dart';
 
 /// Useful extension methods on [Widget]
 extension SlimWidgetX on Widget {
