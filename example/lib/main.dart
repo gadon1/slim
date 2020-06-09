@@ -49,10 +49,10 @@ class LoginService extends RestApi {
 
 class LoginBloc extends SlimObject {
   badLogin(User user) async {
-    final loginService = context.slim<LoginService>();
-    context.showWidget(CircularProgressIndicator());
+    final loginService = slim<LoginService>();
+    showWidget(CircularProgressIndicator(), dismissible: false);
     final result = await loginService.login(user);
-    context.clearMessage();
+    forceClearOverlay();
     if (result.success)
       Home().pushReplacement(context);
     else
@@ -63,10 +63,10 @@ class LoginBloc extends SlimObject {
   }
 
   goodLogin(User user) async {
-    final loginService = context.slim<LoginService>();
-    context.showWidget(CircularProgressIndicator());
+    final loginService = slim<LoginService>();
+    showWidget(CircularProgressIndicator(), dismissible: false);
     await loginService.login(user);
-    context.clearMessage();
+    forceClearOverlay();
     Home().pushReplacement(context);
   }
 }

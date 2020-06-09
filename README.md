@@ -160,12 +160,12 @@ The `SlimObject` has context propery to access the current context so you can us
 `showOverlay` - display overlay text message\
 `showWidget` - display overlay widget\
 `showSnackBar` - display snackbar with given text\
-`clearMessage` - clears overlays\
-`forceClearMessage` - clears overlays even if not dismissible\
+`clearOverlay` - clears overlays\
+`forceClearOverlay` - clears overlays even if not dismissible\
 
 **context available only when using `SlimBuilder`**
 
-For overlay message and snackbar you can set background color and text style.\
+For overlay message and snackbar you can set background color, text style, overlay color and overlay opacity.\
 For overlay message and widget you can set dismissible flag.
 \
 \
@@ -252,19 +252,19 @@ The full extension methods list is:
 `bool isNotNullOrEmpty`
 
 **`BuildContext`**\
-`bool hasMessage` - true if any overlay currently displayed\
-`void clearMessage()` - clears current overlay message if dismissible\
-`void forceClearMessage()` - clears current overlay message even if not dismissible\
+`bool hasOverlay` - true if any overlay currently displayed\
+`void clearOverlay()` - clears current overlay message if dismissible\
+`void forceClearOverlay()` - clears current overlay message even if not dismissible\
 `void showWidget(Widget widget, {bool dismissible = true})`
 
 ```
-void  showOverlay(String message,{Color messageBackgroundColor = Colors.black,
-bool dismissible = true,messageTextStyle = const  TextStyle(color: Colors.white)})
+void  showOverlay(String message,{Color backgroundColor = Colors.black,
+bool dismissible = true,messageTextStyle = const  TextStyle(color: Colors.white), Color overlayColor = Colors.black, double overlayOpacity = .6})
 ```
 
 ```
-void  showSnackBar(String message,{Color messageBackgroundColor = Colors.black,
-messageTextStyle = const  TextStyle(color: Colors.white)})
+void  showSnackBar(String message,{Color backgroundColor = Colors.black,
+messageTextStyle = const  TextStyle(color: Colors.white), Color overlayColor = Colors.black, double overlayOpacity = .6})
 ```
 
 `T slim<T>()` - access a state object of type T\
@@ -393,15 +393,14 @@ class LoginBloc extends SlimObject {
     showWidget(CircularProgressIndicator(), dismissible:false);
     final result = await loginService.login(user);
     /// Using context access to clear loading indicator
-    forceClearMessage();
+    forceClearOverlay();
     /// Checking slim RestApiResult for success
     if (result.success)
       /// Using slim widget extension method to replace current screen to Home widget
       Home().pushReplacement(context);
     else
       /// Using context access to show a snackbar and locale translation
-      showSnackBar(context.translate("badcreds"),
-          messageBackgroundColor: Colors.red);
+      showSnackBar(context.translate("badcreds"), backgroundColor: Colors.red);
   }
 
   goodLogin(User user) async {
@@ -413,7 +412,7 @@ class LoginBloc extends SlimObject {
     showWidget(CircularProgressIndicator(), dismissible:false);
     await loginService.login(user);
     //Using context access to clear loading indicator
-    clearMessage();
+    forceClearOverlay();
     /// Using slim widget extension method to replace current screen to Home widget
     Home().pushReplacement(context);
   }
