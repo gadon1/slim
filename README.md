@@ -300,13 +300,13 @@ messageTextStyle = const  TextStyle(color: Colors.white), Color overlayColor = C
 
 ## RestApi
 
-**`RestApi`** is an abstract class that gives you rest (get, delete, post, put) methods for fast service writing.\
-The `RestApi` class constructor gets the server url, and its methods gets the service url and some additional data.\
-`RestApi` class has a `createHeaders` method that can be overriden.\
-`RestApi` methods wrapped in try/catch clause and returns `RestApiResponse` object.
+**`SlimApi`** is an abstract class that gives you rest (get, delete, post, put) methods for fast service writing.\
+The `SlimApi` class constructor gets the server url, and its methods gets the service url and some additional data.\
+`SlimApi` class has a `createHeaders` method that can be overriden.\
+`SlimApi` methods wrapped in try/catch clause and returns `SlimResponse` object.
 
 ```dart
-class RestApiResponse {
+class SlimResponse {
   bool get success => statusCode == 200 || statusCode == 201;
   int statusCode;
   String body;
@@ -316,7 +316,7 @@ class RestApiResponse {
   int milliseconds;
   String get error => body.isNullOrEmpty ? exception : body;
 
-  RestApiResponse(this.url, this.method, this.statusCode, this.milliseconds);
+  SlimResponse(this.url, this.method, this.statusCode, this.milliseconds);
 
   @override
   String toString() => "$method [$statusCode] [$error] ${milliseconds}ms";
@@ -327,15 +327,15 @@ Exapmle for a login service:
 
 ```dart
 
-class LoginService extends RestApi {
+class LoginService extends SlimApi {
   LoginService() : super("http://myserver.com/api");
 
   /// POST http://myserver.com/api/login
-  Future<RestApiResponse> login(User user) =>
+  Future<SlimResponse> login(User user) =>
       post("login", {"userName": user.userName, "password": user.password});
 
   /// POST http://myserver.com/api/logout
-  Future<RestApiResponse> logout(User user) =>
+  Future<SlimResponse> logout(User user) =>
       post("logout", {"userName": user.userName});
 }
 
@@ -374,14 +374,14 @@ class User{
 3. LoginService class
 
 ```dart
-/// Extends slim RestApi class
-class LoginService extends RestApi {
+/// Extends SlimApi class
+class LoginService extends SlimApi {
   LoginService() : super("http://myserver.com/api");
 
-  Future<RestApiResponse> login(User user) =>
+  Future<SlimResponse> login(User user) =>
       post("login", {"userName": user.userName, "password": user.password});
 
-  Future<RestApiResponse> logout(User user) =>
+  Future<SlimResponse> logout(User user) =>
       post("logout", {"userName": user.userName});
 }
 ```

@@ -1,3 +1,11 @@
+## [4.0.0]
+
+breaking changes:
+
+- RestApi -> SlimApi
+- RestApiMethod -> SlimApiMethod
+- RestApiResponse -> SlimResponse
+
 ## [3.3.7]
 
 - update(documentaion)

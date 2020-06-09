@@ -5,52 +5,50 @@ import 'extensions.dart';
 const String applicationJSON = "application/json; charset=UTF-8";
 const String contentType = "content-type";
 
-enum RestApiMethod { GET, POST, PUT, DELETE }
+enum SlimApiMethod { GET, POST, PUT, DELETE }
 
 /// Abstract class to ease Rest api services writing
-abstract class RestApi {
+abstract class SlimApi {
   /// The server main url
   final String serverUrl;
-  RestApi(this.serverUrl);
+  SlimApi(this.serverUrl);
 
   /// Set request headers
-  Map<String, String> createHeaders(RestApiMethod method, {String extra}) =>
+  Map<String, String> createHeaders(SlimApiMethod method, {String extra}) =>
       {contentType: applicationJSON};
 
   /// GET request to serverlUrl/serviceUrl, extra parametes passed to createHeaders method
-  Future<RestApiResponse> get(String serviceUrl, {String extra}) =>
-      _request(serviceUrl, RestApiMethod.GET, extra: extra);
+  Future<SlimResponse> get(String serviceUrl, {String extra}) =>
+      _request(serviceUrl, SlimApiMethod.GET, extra: extra);
 
   /// DELETE request to serverlUrl/serviceUrl, extra parametes passed to createHeaders method
-  Future<RestApiResponse> delete(String serviceUrl, {String extra}) =>
-      _request(serviceUrl, RestApiMethod.DELETE, extra: extra);
+  Future<SlimResponse> delete(String serviceUrl, {String extra}) =>
+      _request(serviceUrl, SlimApiMethod.DELETE, extra: extra);
 
   /// POST request to serverlUrl/serviceUrl, extra parametes passed to createHeaders method
-  Future<RestApiResponse> post(String serviceUrl, dynamic body,
-          {String extra}) =>
-      _request(serviceUrl, RestApiMethod.POST, body: body, extra: extra);
+  Future<SlimResponse> post(String serviceUrl, dynamic body, {String extra}) =>
+      _request(serviceUrl, SlimApiMethod.POST, body: body, extra: extra);
 
   /// PUT request to serverlUrl/serviceUrl, extra parametes passed to createHeaders method
-  Future<RestApiResponse> put(String serviceUrl, dynamic body,
-          {String extra}) =>
-      _request(serviceUrl, RestApiMethod.PUT, body: body, extra: extra);
+  Future<SlimResponse> put(String serviceUrl, dynamic body, {String extra}) =>
+      _request(serviceUrl, SlimApiMethod.PUT, body: body, extra: extra);
 
-  Function _getCall(RestApiMethod method) {
+  Function _getCall(SlimApiMethod method) {
     switch (method) {
-      case RestApiMethod.POST:
+      case SlimApiMethod.POST:
         return http.post;
-      case RestApiMethod.DELETE:
+      case SlimApiMethod.DELETE:
         return http.delete;
-      case RestApiMethod.GET:
+      case SlimApiMethod.GET:
         return http.get;
-      case RestApiMethod.PUT:
+      case SlimApiMethod.PUT:
         return http.put;
       default:
         throw UnsupportedError("rest method not supported");
     }
   }
 
-  Future<RestApiResponse> _request(String serviceUrl, RestApiMethod method,
+  Future<SlimResponse> _request(String serviceUrl, SlimApiMethod method,
       {dynamic body, String extra}) async {
     final url = "$serverUrl/$serviceUrl";
     final st = Stopwatch()..start();
@@ -67,15 +65,15 @@ abstract class RestApi {
           : call(url, headers: createHeaders(method, extra: extra)));
 
       st.stop();
-      final response = RestApiResponse(
-          url, method, result.statusCode, st.elapsedMilliseconds)
-        ..body = result.body;
+      final response =
+          SlimResponse(url, method, result.statusCode, st.elapsedMilliseconds)
+            ..body = result.body;
       if (!response.success) response.exception = result.reasonPhrase;
       print(response);
       return response;
     } catch (e) {
       st.stop();
-      final response = RestApiResponse(url, method, 500, st.elapsedMilliseconds)
+      final response = SlimResponse(url, method, 500, st.elapsedMilliseconds)
         ..exception = e.toString();
       print(response);
       return response;
@@ -83,8 +81,8 @@ abstract class RestApi {
   }
 }
 
-/// Rest api response object
-class RestApiResponse {
+/// Slim api response object
+class SlimResponse {
   /// True if statusCode == 200 || statusCode == 201
   bool get success => statusCode == 200 || statusCode == 201;
 
@@ -98,7 +96,7 @@ class RestApiResponse {
   String exception;
 
   /// Request Rest Method
-  RestApiMethod method;
+  SlimApiMethod method;
 
   /// Request url
   String url;
@@ -109,7 +107,7 @@ class RestApiResponse {
   /// Response error
   String get error => body.isNullOrEmpty ? exception : body;
 
-  RestApiResponse(this.url, this.method, this.statusCode, this.milliseconds);
+  SlimResponse(this.url, this.method, this.statusCode, this.milliseconds);
 
   @override
   String toString() => "$method [$statusCode] [$error] ${milliseconds}ms";
