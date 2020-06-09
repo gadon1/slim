@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'extensions.dart';
+import 'response.dart';
 
 const String applicationJSON = "application/json; charset=UTF-8";
 const String contentType = "content-type";
@@ -79,36 +79,4 @@ abstract class SlimApi {
       return response;
     }
   }
-}
-
-/// Slim api response object
-class SlimResponse {
-  /// True if statusCode == 200 || statusCode == 201
-  bool get success => statusCode == 200 || statusCode == 201;
-
-  /// Response status code
-  int statusCode;
-
-  /// Response body
-  String body;
-
-  /// Response exception - use error instead
-  String exception;
-
-  /// Request Rest Method
-  SlimApiMethod method;
-
-  /// Request url
-  String url;
-
-  /// Elapsed milliseconds
-  int milliseconds;
-
-  /// Response error
-  String get error => body.isNullOrEmpty ? exception : body;
-
-  SlimResponse(this.url, this.method, this.statusCode, this.milliseconds);
-
-  @override
-  String toString() => "$method [$statusCode] [$error] ${milliseconds}ms";
 }
