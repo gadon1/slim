@@ -61,11 +61,11 @@ class MyApp extends StatelessWidget{
 
 ## Localization
 
-**UI direction**
+**UI direction**\
 The **confgurations** above will make your UI ltr/rtl automatically according to os locale.
 You can use `BuildContext` extension method to get your locale text direction `context.textDirection`
 
-**Translation**
+**Translation**\
 If you didn't provide any custom `SlimLocaleLoader` , Your localization would be configured with a default one. The default `SlimLocaleLoader` expects locale files to be in _- assets/locales/_ folder with name convention of your locale. for example _- assets/locales/en.json_.
 The default locale file format is a single level json that holds you translation.
 
@@ -88,10 +88,10 @@ UI Messages caps are available via `BuildContext` extension methods. Since `Slim
 You can display overlay with your own widget, text message and a snackbar.
 
 ```dart
-showWidget(Widget widget, {bool dissmiable = true})
+showWidget(Widget widget, {bool dissmisble = true, Color overlayColor = Colors.black,double overlayOpacity = .6})
 
-showOverlay(String message,{Color messageBackgroundColor = Colors.black,
-bool dissmisable = true,messageTextStyle = const  TextStyle(color: Colors.white)});
+showOverlay(String message,{Color backgroundColor = Colors.black,
+bool dissmisble = true,textStyle = const  TextStyle(color: Colors.white), Color overlayColor = Colors.black,double overlayOpacity = .6});
 
 showSnackBar(String message,{Color messageBackgroundColor = Colors.black,
 messageTextStyle = const  TextStyle(color: Colors.white)});
@@ -125,7 +125,7 @@ Widget build(BuildContext context) => Column(children:[
 ```
 
 For text overlay and snackbar you can set the background color and text style.\
-For overlay of text or widget you can specify if dismissable.
+For overlay of text or widget you can specify if dismissible.
 
 ## State Management
 
@@ -161,12 +161,12 @@ The `SlimObject` has context propery to access the current context so you can us
 `showWidget` - display overlay widget\
 `showSnackBar` - display snackbar with given text\
 `clearMessage` - clears overlays\
-`forceClearMessage` - clears overlays even if not dismissable\
+`forceClearMessage` - clears overlays even if not dismissible\
 
 **context available only when using `SlimBuilder`**
 
 For overlay message and snackbar you can set background color and text style.\
-For overlay message and widget you can set dismissable flag.
+For overlay message and widget you can set dismissible flag.
 \
 \
 **Putting objects in the tree**\
@@ -253,13 +253,13 @@ The full extension methods list is:
 
 **`BuildContext`**\
 `bool hasMessage` - true if any overlay currently displayed\
-`void clearMessage()` - clears current overlay message if dismissable\
-`void forceClearMessage()` - clears current overlay message even if not dismissable\
-`void showWidget(Widget widget, {bool dismissable = true})`
+`void clearMessage()` - clears current overlay message if dismissible\
+`void forceClearMessage()` - clears current overlay message even if not dismissible\
+`void showWidget(Widget widget, {bool dismissible = true})`
 
 ```
 void  showOverlay(String message,{Color messageBackgroundColor = Colors.black,
-bool dismissable = true,messageTextStyle = const  TextStyle(color: Colors.white)})
+bool dismissible = true,messageTextStyle = const  TextStyle(color: Colors.white)})
 ```
 
 ```
@@ -283,6 +283,15 @@ messageTextStyle = const  TextStyle(color: Colors.white)})
 `Future<T> push<T>(BuildContext context)` - navigator push\
 `Future<T> pushReplacement<T>(BuildContext context)` - navigator pushReplacement\
 `Future<T> pushTop<T>(BuildContext context)` - push at navigators most top
+
+**`int`**\
+`Duration get seconds` - get in seconds\
+`Duration get hours` - get in hours\
+`Duration get days` - get in days\
+`Duration get minutes` - get in minutes\
+`Duration get milliseconds` - get in milliseconds\
+`Duration get microseconds` - get in microseconds\
+`DateTime get nowMinutesInterval` - get current time with minutes round up to interval
 
 ## RestApi
 
@@ -381,7 +390,7 @@ class LoginBloc extends SlimObject {
     /// Access login service via slim
     final loginService = slim<LoginService>();
     /// Using context access to display loading indicator
-    showWidget(CircularProgressIndicator(), dismissable:false);
+    showWidget(CircularProgressIndicator(), dismissible:false);
     final result = await loginService.login(user);
     /// Using context access to clear loading indicator
     forceClearMessage();
@@ -401,7 +410,7 @@ class LoginBloc extends SlimObject {
     /// Close keyboard
     closeKeyboard();
     /// Using context access to display loading indicator
-    showWidget(CircularProgressIndicator(), dismissable:false);
+    showWidget(CircularProgressIndicator(), dismissible:false);
     await loginService.login(user);
     //Using context access to clear loading indicator
     clearMessage();

@@ -1,6 +1,6 @@
 name: slim
 description: app essentials - common app infrastructure for localizations, ui messages, state management, useful extensions, rest api
-version: 3.3.2
+version: 3.3.3
 homepage: https://github.com/gadon1/slim
 
 environment:

@@ -4,15 +4,15 @@ import 'state_management.dart';
 
 /// Useful extension methods on [BuildContext]
 extension SlimBuildContextMessagesX on BuildContext {
-  /// Clear UI messages even if not dismissable
-  void forceClearMessage() => _msg.forceClearMessage();
+  /// Clear UI messages even if not dismissible
+  void forceClearOverlay() => _msg.forceClearMessage();
 
-  /// Clear UI messages if not dismissable
-  void clearMessage() => _msg.clearMessage();
+  /// Clear UI messages if not dismissible
+  void clearOverlay() => _msg.clearMessage();
 
   /// Show overlay widget
   void showWidget(Widget widget,
-          {bool dismissable = true,
+          {bool dismissible = true,
           Color overlayColor = Colors.black,
           double overlayOpacity = .6}) =>
       _msg.showMessage(
@@ -21,7 +21,7 @@ extension SlimBuildContextMessagesX on BuildContext {
         null,
         null,
         _MessageType.Widget,
-        dismissable,
+        dismissible,
         overlayColor,
         overlayOpacity,
       );
@@ -29,12 +29,12 @@ extension SlimBuildContextMessagesX on BuildContext {
   /// Show overlay text
   void showOverlay(String message,
           {Color backgroundColor = Colors.black,
-          bool dismissable = true,
+          bool dismissible = true,
           textStyle = const TextStyle(color: Colors.white),
           Color overlayColor = Colors.black,
           double overlayOpacity = .6}) =>
       _msg.showMessage(this, message, backgroundColor, textStyle,
-          _MessageType.Overlay, dismissable, overlayColor, overlayOpacity);
+          _MessageType.Overlay, dismissible, overlayColor, overlayOpacity);
 
   /// Show snackbar
   void showSnackBar(String message,
@@ -44,7 +44,7 @@ extension SlimBuildContextMessagesX on BuildContext {
           _MessageType.Snackbar, false, Colors.black, .6);
 
   /// True if currently showing overlay
-  bool get hasMessage => _msg.hasMessage;
+  bool get hasOverlay => _msg.hasMessage;
 }
 
 /// Recommended widget to consume [SlimObject]
@@ -139,23 +139,43 @@ abstract class SlimObject extends ChangeNotifier {
   BuildContext get context => _getContext();
 
   /// Show overlay widget
-  void showWidget(Widget widget, {bool dismissable = true}) =>
-      context?.showWidget(widget, dismissable: dismissable);
+  void showWidget(
+    Widget widget, {
+    bool dismissible = true,
+    Color overlayColor = Colors.black,
+    double overlayOpacity = .6,
+  }) =>
+      context?.showWidget(
+        widget,
+        dismissible: dismissible,
+        overlayColor: overlayColor,
+        overlayOpacity: overlayOpacity,
+      );
 
   /// Show overlay text
-  void showOverlay(String message,
-          {Color backgroundColor = Colors.black,
-          bool dismissable = true,
-          textStyle = const TextStyle(color: Colors.white)}) =>
-      context?.showOverlay(message,
-          backgroundColor: backgroundColor,
-          dismissable: dismissable,
-          textStyle: textStyle);
+  void showOverlay(
+    String message, {
+    Color backgroundColor = Colors.black,
+    bool dismissible = true,
+    textStyle = const TextStyle(color: Colors.white),
+    Color overlayColor = Colors.black,
+    double overlayOpacity = .6,
+  }) =>
+      context?.showOverlay(
+        message,
+        backgroundColor: backgroundColor,
+        dismissible: dismissible,
+        textStyle: textStyle,
+        overlayColor: overlayColor,
+        overlayOpacity: overlayOpacity,
+      );
 
   /// Show snackbar
-  void showSnackBar(String message,
-          {Color backgroundColor = Colors.black,
-          textStyle = const TextStyle(color: Colors.white)}) =>
+  void showSnackBar(
+    String message, {
+    Color backgroundColor = Colors.black,
+    textStyle = const TextStyle(color: Colors.white),
+  }) =>
       context?.showSnackBar(message,
           backgroundColor: backgroundColor, textStyle: textStyle);
 
@@ -163,13 +183,13 @@ abstract class SlimObject extends ChangeNotifier {
   void closeKeyboard() => context?.closeKeyboard();
 
   /// True if currently showing overlay
-  bool get hasMessage => context?.hasMessage ?? false;
+  bool get hasOverlay => context?.hasOverlay ?? false;
 
-  /// Clear UI messages if not dismissable
-  void clearMessage() => context?.clearMessage();
+  /// Clear UI messages if not dismissible
+  void clearOverlay() => context?.clearOverlay();
 
-  /// Clear UI messages even if not dismissable
-  void forceClearMessage() => context?.forceClearMessage();
+  /// Clear UI messages even if not dismissible
+  void forceClearOverlay() => context?.forceClearOverlay();
 }
 
 enum _MessageType { Overlay, Snackbar, Widget }
@@ -180,7 +200,7 @@ class _SlimMessageObject extends ChangeNotifier {
   dynamic message;
   _MessageType messageType;
   Widget widget;
-  bool dismissable;
+  bool dismissible;
   Color overlayColor;
   double overlayOpacity;
 
@@ -197,14 +217,14 @@ class _SlimMessageObject extends ChangeNotifier {
       Color messageBackgroundColor,
       messageTextStyle,
       _MessageType messageType,
-      bool dismissable,
+      bool dismissible,
       Color overlayColor,
       double overlayOpacity) {
     this.message = message;
     this..messageBackgroundColor = messageBackgroundColor;
     this.messageTextStyle = messageTextStyle;
     this.messageType = messageType;
-    this.dismissable = dismissable;
+    this.dismissible = dismissible;
     this.overlayColor = overlayColor;
     this.overlayOpacity = overlayOpacity;
     notifyListeners();
@@ -216,13 +236,13 @@ class _SlimMessageObject extends ChangeNotifier {
   }
 
   void clearMessage() {
-    if (!dismissable && messageType != _MessageType.Snackbar) return;
+    if (!dismissible && messageType != _MessageType.Snackbar) return;
     message = null;
     notifyListeners();
   }
 
   void forceClearMessage() {
-    dismissable = true;
+    dismissible = true;
     clearMessage();
   }
 

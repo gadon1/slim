@@ -1,3 +1,8 @@
+## [3.3.3]
+
+- UI Messages: breaking change: typo dissmisable -> dissmisible, clearMessage -> clearOverlay, forceClearMessage -> forceClearOverlay
+- new extension methods on int for duration and current date with round up minutes interval
+
 ## [3.3.2]
 
 - UI Messages: add overlayColor & overlayOpacity options when showing overlay message / widget
