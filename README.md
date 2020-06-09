@@ -167,11 +167,11 @@ The `SlimController` has context propery to access the current context so you ca
 For overlay message and snackbar you can set background color, text style, overlay color and overlay opacity.\
 For overlay message and widget you can set dismissible flag.
 
-**SlimAppStateObject**\
-abstract class that inherits from `SlimController` and recieves AppLifecycleState events. the events change recieves only if the SlimAppStateObject
-is accessed in the current app's screen. SlimAppStateObject force to override its `void onAppStateChanged(AppLifecycleState state)` method.
+**SlimAppStateController**\
+abstract class that inherits from `SlimController` and recieves AppLifecycleState events. the events change recieves only if the SlimAppStateController
+is accessed in the current app's screen. SlimAppStateController force to override its `void onAppStateChanged(AppLifecycleState state)` method.
 
-**`SlimAppStateObject` must be access via `SlimBuilder`, `SlimController` access via `SlimBuilder` is optional but recommended**
+**`SlimAppStateController` must be access via `SlimBuilder`, `SlimController` access via `SlimBuilder` is optional but recommended**
 \
 \
 **Putting Slims in the tree**\

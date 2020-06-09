@@ -1,3 +1,7 @@
+## [4.1.5]
+
+- update(readme)
+
 ## [4.1.4]
 
 - update(example)
@@ -39,7 +43,7 @@ breaking changes:
 
 ## [3.3.5]
 
-- introducing `SlimAppStateObject` to extend `SlimController` and getting `AppLifecycleState` events
+- introducing `SlimAppStateObject` to extend `SlimObject` and getting `AppLifecycleState` events
 
 ## [3.3.4]
 
