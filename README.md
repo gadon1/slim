@@ -8,6 +8,7 @@
 - Localizations
 - UI Messages
 - State Management
+- AppLifecycleState Events
 - Useful Extensions
 - Rest Api
 
@@ -163,14 +164,15 @@ The `SlimObject` has context propery to access the current context so you can us
 `clearOverlay` - clears overlays\
 `forceClearOverlay` - clears overlays even if not dismissible\
 
-**SlimAppStateObject**\
-abstract class that inherits from [SlimObject] and recieves AppLifecycleState events. the events change recieves only if the [SlimStateObject]
-is accessed in the current app's screen. [SlimAppStateObject] force to override its `void onAppStateChanged(AppLifecycleState state)` method.\
-
-**[SlimAppStateObject] must be access via [SlimBuilder], [SlimObject] access via [SlimBuilder] is optinal but recommended**
-
 For overlay message and snackbar you can set background color, text style, overlay color and overlay opacity.\
 For overlay message and widget you can set dismissible flag.
+
+**SlimAppStateObject**\
+abstract class that inherits from [SlimObject] and recieves AppLifecycleState events. the events change recieves only if the [SlimStateObject]
+is accessed in the current app's screen. [SlimAppStateObject] force to override its `void onAppStateChanged(AppLifecycleState state)` method.
+
+**[SlimAppStateObject] must be access via [SlimBuilder], [SlimObject] access via [SlimBuilder] is optional but recommended**
+
 \
 \
 **Putting objects in the tree**\

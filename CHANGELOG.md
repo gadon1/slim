@@ -1,3 +1,7 @@
+## [3.3.6]
+
+- update(documentaion)
+
 ## [3.3.5]
 
 - introducing [SlimAppStateObject] to extend [SlimObject] and getting AppLifecycleState events
