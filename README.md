@@ -162,20 +162,19 @@ The `SlimObject` has context propery to access the current context so you can us
 `showWidget` - display overlay widget\
 `showSnackBar` - display snackbar with given text\
 `clearOverlay` - clears overlays\
-`forceClearOverlay` - clears overlays even if not dismissible\
+`forceClearOverlay` - clears overlays even if not dismissible
 
 For overlay message and snackbar you can set background color, text style, overlay color and overlay opacity.\
 For overlay message and widget you can set dismissible flag.
 
 **SlimAppStateObject**\
-abstract class that inherits from [SlimObject] and recieves AppLifecycleState events. the events change recieves only if the [SlimStateObject]
-is accessed in the current app's screen. [SlimAppStateObject] force to override its `void onAppStateChanged(AppLifecycleState state)` method.
+abstract class that inherits from `SlimObject` and recieves AppLifecycleState events. the events change recieves only if the SlimAppStateObject
+is accessed in the current app's screen. SlimAppStateObject force to override its `void onAppStateChanged(AppLifecycleState state)` method.
 
-**[SlimAppStateObject] must be access via [SlimBuilder], [SlimObject] access via [SlimBuilder] is optional but recommended**
-
+**`SlimAppStateObject` must be access via `SlimBuilder`, `SlimObject` access via `SlimBuilder` is optional but recommended**
 \
 \
-**Putting objects in the tree**\
+**Putting Slims in the tree**\
 For the following example we will use a simple Counter class:
 
 ```dart
