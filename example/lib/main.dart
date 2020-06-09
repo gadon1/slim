@@ -37,13 +37,13 @@ class User {
   String password;
 }
 
-class LoginService extends RestApi {
+class LoginService extends SlimApi {
   LoginService() : super("http://myserver.com/api");
 
-  Future<RestApiResponse> login(User user) =>
+  Future<SlimResponse> login(User user) =>
       post("login", {"userName": user.userName, "password": user.password});
 
-  Future<RestApiResponse> logout(User user) =>
+  Future<SlimResponse> logout(User user) =>
       post("logout", {"userName": user.userName});
 }
 
