@@ -1,3 +1,8 @@
+## [3.3.2]
+
+- UI Messages: add overlayColor & overlayOpacity options when showing overlay message / widget
+- UI Messages: breaking change: messageBackgroundColor -> backgroundColor, messageTextStyle -> textStyle
+
 ## [3.3.1]
 
 - publish on 1.17.2 stable channel

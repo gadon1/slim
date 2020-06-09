@@ -56,8 +56,10 @@ class LoginBloc extends SlimObject {
     if (result.success)
       Home().pushReplacement(context);
     else
-      context.showSnackBar(context.translate("badcreds"),
-          messageBackgroundColor: Colors.red);
+      context.showSnackBar(
+        context.translate("badcreds"),
+        backgroundColor: Colors.red,
+      );
   }
 
   goodLogin(User user) async {

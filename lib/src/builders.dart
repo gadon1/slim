@@ -11,23 +11,37 @@ extension SlimBuildContextMessagesX on BuildContext {
   void clearMessage() => _msg.clearMessage();
 
   /// Show overlay widget
-  void showWidget(Widget widget, {bool dismissable = true}) => _msg.showMessage(
-      this, widget, null, null, _MessageType.Widget, dismissable);
+  void showWidget(Widget widget,
+          {bool dismissable = true,
+          Color overlayColor = Colors.black,
+          double overlayOpacity = .6}) =>
+      _msg.showMessage(
+        this,
+        widget,
+        null,
+        null,
+        _MessageType.Widget,
+        dismissable,
+        overlayColor,
+        overlayOpacity,
+      );
 
   /// Show overlay text
   void showOverlay(String message,
-          {Color messageBackgroundColor = Colors.black,
+          {Color backgroundColor = Colors.black,
           bool dismissable = true,
-          messageTextStyle = const TextStyle(color: Colors.white)}) =>
-      _msg.showMessage(this, message, messageBackgroundColor, messageTextStyle,
-          _MessageType.Overlay, dismissable);
+          textStyle = const TextStyle(color: Colors.white),
+          Color overlayColor = Colors.black,
+          double overlayOpacity = .6}) =>
+      _msg.showMessage(this, message, backgroundColor, textStyle,
+          _MessageType.Overlay, dismissable, overlayColor, overlayOpacity);
 
   /// Show snackbar
   void showSnackBar(String message,
-          {Color messageBackgroundColor = Colors.black,
-          messageTextStyle = const TextStyle(color: Colors.white)}) =>
-      _msg.showMessage(this, message, messageBackgroundColor, messageTextStyle,
-          _MessageType.Snackbar, false);
+          {Color backgroundColor = Colors.black,
+          textStyle = const TextStyle(color: Colors.white)}) =>
+      _msg.showMessage(this, message, backgroundColor, textStyle,
+          _MessageType.Snackbar, false, Colors.black, .6);
 
   /// True if currently showing overlay
   bool get hasMessage => _msg.hasMessage;
@@ -130,21 +144,20 @@ abstract class SlimObject extends ChangeNotifier {
 
   /// Show overlay text
   void showOverlay(String message,
-          {Color messageBackgroundColor = Colors.black,
+          {Color backgroundColor = Colors.black,
           bool dismissable = true,
-          messageTextStyle = const TextStyle(color: Colors.white)}) =>
+          textStyle = const TextStyle(color: Colors.white)}) =>
       context?.showOverlay(message,
-          messageBackgroundColor: messageBackgroundColor,
+          backgroundColor: backgroundColor,
           dismissable: dismissable,
-          messageTextStyle: messageTextStyle);
+          textStyle: textStyle);
 
   /// Show snackbar
   void showSnackBar(String message,
-          {Color messageBackgroundColor = Colors.black,
-          messageTextStyle = const TextStyle(color: Colors.white)}) =>
+          {Color backgroundColor = Colors.black,
+          textStyle = const TextStyle(color: Colors.white)}) =>
       context?.showSnackBar(message,
-          messageBackgroundColor: messageBackgroundColor,
-          messageTextStyle: messageTextStyle);
+          backgroundColor: backgroundColor, textStyle: textStyle);
 
   /// Close Keyboard by requesting focuse
   void closeKeyboard() => context?.closeKeyboard();
@@ -168,6 +181,8 @@ class _SlimMessageObject extends ChangeNotifier {
   _MessageType messageType;
   Widget widget;
   bool dismissable;
+  Color overlayColor;
+  double overlayOpacity;
 
   Future<bool> _onWillPop() async {
     if (message == null) return true;
@@ -182,12 +197,16 @@ class _SlimMessageObject extends ChangeNotifier {
       Color messageBackgroundColor,
       messageTextStyle,
       _MessageType messageType,
-      bool dismissable) {
+      bool dismissable,
+      Color overlayColor,
+      double overlayOpacity) {
     this.message = message;
     this..messageBackgroundColor = messageBackgroundColor;
     this.messageTextStyle = messageTextStyle;
     this.messageType = messageType;
     this.dismissable = dismissable;
+    this.overlayColor = overlayColor;
+    this.overlayOpacity = overlayOpacity;
     notifyListeners();
     if (context != null) {
       final route = ModalRoute.of(context);
@@ -242,7 +261,8 @@ class _SlimMessage extends StatelessWidget {
       child: Container(
         height: double.infinity,
         width: double.infinity,
-        color: Colors.black.withOpacity(.6),
+        color: messageObject.overlayColor
+            .withOpacity(messageObject.overlayOpacity),
         child: GestureDetector(
           onTap: () {},
           child: Center(
