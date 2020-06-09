@@ -47,7 +47,7 @@ class LoginService extends RestApi {
       post("logout", {"userName": user.userName});
 }
 
-class LoginBloc extends SlimObject {
+class LoginBloc extends SlimController {
   badLogin(User user) async {
     final loginService = slim<LoginService>();
     showWidget(CircularProgressIndicator(), dismissible: false);

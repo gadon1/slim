@@ -85,7 +85,7 @@ Widget build(BuildContext context) => Text(context.translate('welcome'));
 
 ## UI Messages
 
-UI Messages caps are available via `BuildContext` extension methods. Since `SlimObject` accessed by `SlimBuilder` has an access to current context, these caps are also available inside it. That will be explained in the **State Management** section below.
+UI Messages caps are available via `BuildContext` extension methods. Since `SlimController` accessed by `SlimBuilder` has an access to current context, these caps are also available inside it. That will be explained in the **State Management** section below.
 You can display overlay with your own widget, text message and a snackbar.
 
 ```dart
@@ -136,11 +136,11 @@ The state object can be a widget state object, data object, business object or w
 You can even use it for passing parameters between screens, so it can be a String, int or even an enum.
 This is the one of the powerful concepts of **slim** state management - it can be any state and not limited for a widget state.
 
-Before you go over below examples, excluding the case of parameter passing between screens, the most recommended state object is the **`SlimObject`** and recommended way to access it is via **`SlimBuilder`** widget.  
-By using the `SlimObject` from one side and `SlimBuilder` on the other, you get the best of three worlds:
+Before you go over below examples, excluding the case of parameter passing between screens, the most recommended state object is the **`SlimController`** and recommended way to access it is via **`SlimBuilder`** widget.  
+By using the `SlimController` from one side and `SlimBuilder` on the other, you get the best of three worlds:
 
 1. Widget state control - you can make the wrapped widget to rebuild by calling `updateUI` method.
-   Since `SlimObject` based on `ChangeNotifier` it will cause **all** widgets that referenced it to rebuild.
+   Since `SlimController` based on `ChangeNotifier` it will cause **all** widgets that referenced it to rebuild.
    That is great but considered to be a `ChangeNotifier` disadvantage in case you only want to rebuild the current widget. For that you can pass the current flag and decide when you want to globaly or localy update the UI.
 
    `updateUI({bool current = false})`
@@ -150,14 +150,14 @@ By using the `SlimObject` from one side and `SlimBuilder` on the other, you get 
    Local - put your object/value at the top of a sub tree. That way you can share objects for a local tree or pass
    parameters between screens.
 
-3. Separate & not disconnected business logic - The `SlimObject` accessed by `SlimBuilder` allows you to separate the business from UI but gives access to current context. That gives you that ability to combine navigation flows and use the UI messages inside your business class.
+3. Separate & not disconnected business logic - The `SlimController` accessed by `SlimBuilder` allows you to separate the business from UI but gives access to current context. That gives you that ability to combine navigation flows and use the UI messages inside your business class.
 
-**SlimObject**\
+**SlimController**\
 abstract class that can be used for state management or logic, inherits from [ChangeNotifier](https://api.flutter.dev/flutter/foundation/ChangeNotifier-class.html) and gives you widget rebuild options:\
 `T slim<slim>()` - access to ancestor slims
 `updateUI({bool current = false})` - will refresh the state of all / current widgets that reference it (current update flag workd only if you access it via [SlimBuilder] widget).\
 `closeKeyBoard()` - close keyboard by requesting focuse
-The `SlimObject` has context propery to access the current context so you can use context extensions from inside a business login class interacting with UI:\
+The `SlimController` has context propery to access the current context so you can use context extensions from inside a business login class interacting with UI:\
 `showOverlay` - display overlay text message\
 `showWidget` - display overlay widget\
 `showSnackBar` - display snackbar with given text\
@@ -168,17 +168,17 @@ For overlay message and snackbar you can set background color, text style, overl
 For overlay message and widget you can set dismissible flag.
 
 **SlimAppStateObject**\
-abstract class that inherits from `SlimObject` and recieves AppLifecycleState events. the events change recieves only if the SlimAppStateObject
+abstract class that inherits from `SlimController` and recieves AppLifecycleState events. the events change recieves only if the SlimAppStateObject
 is accessed in the current app's screen. SlimAppStateObject force to override its `void onAppStateChanged(AppLifecycleState state)` method.
 
-**`SlimAppStateObject` must be access via `SlimBuilder`, `SlimObject` access via `SlimBuilder` is optional but recommended**
+**`SlimAppStateObject` must be access via `SlimBuilder`, `SlimController` access via `SlimBuilder` is optional but recommended**
 \
 \
 **Putting Slims in the tree**\
 For the following example we will use a simple Counter class:
 
 ```dart
-class Counter extends SlimObject{
+class Counter extends SlimController{
 	int value=0;
 	inc(){
 		value++;
@@ -389,8 +389,8 @@ class LoginService extends SlimApi {
 4. LoginBloc class - Business logic
 
 ```dart
-/// Extends slim SlimObject class
-class LoginBloc extends SlimObject {
+/// Extends slim SlimController class
+class LoginBloc extends SlimController {
   badLogin(User user) async {
     /// Access login service via slim
     final loginService = slim<LoginService>();

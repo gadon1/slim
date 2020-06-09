@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'curr_slim.dart';
 import 'slim.dart';
-import 'slim_object.dart';
+import 'slim_controller.dart';
 import '../extensions/build_context.dart';
 
-/// Recommended widget to consume [SlimObject]
+/// Recommended widget to consume [SlimController]
 class SlimBuilder<T> extends StatelessWidget {
   final Widget Function(T stateObject) builder;
   final T instance;
@@ -19,7 +19,7 @@ class SlimBuilder<T> extends StatelessWidget {
       );
 
     final stateObject = context.slim<T>();
-    if (stateObject is SlimObject) {
+    if (stateObject is SlimController) {
       return Slim<CurrSlim>(
         stateObject: CurrSlim(),
         child: Builder(builder: (ctx) {

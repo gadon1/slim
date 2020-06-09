@@ -3,7 +3,7 @@ import '../extensions/build_context.dart';
 import 'curr_slim.dart';
 
 /// Abstract class for recommended state object
-abstract class SlimObject extends ChangeNotifier {
+abstract class SlimController extends ChangeNotifier {
   /// Update all widget that reference it, if current is true then only update current widget
   void updateUI({bool current = false}) => current
       ? context?.slim<CurrSlim>()?.notifyListeners()

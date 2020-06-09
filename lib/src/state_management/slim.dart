@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'slim_notifier.dart';
 import 'slim_inherited_notifier.dart';
-import 'slim_object.dart';
+import 'slim_controller.dart';
 
 /// [Slim] StatefulWidget with special inherited notifier state object wrapping
 class Slim<T> extends StatefulWidget {
@@ -33,12 +33,14 @@ class _SlimState<T> extends State<Slim<T>> {
   void initState() {
     super.initState();
     _stateObject = widget.stateObject;
-    if (_stateObject is SlimObject) (_stateObject as SlimObject).onInit();
+    if (_stateObject is SlimController)
+      (_stateObject as SlimController).onInit();
   }
 
   @override
   void dispose() {
-    if (_stateObject is SlimObject) (_stateObject as SlimObject).onDispose();
+    if (_stateObject is SlimController)
+      (_stateObject as SlimController).onDispose();
     super.dispose();
   }
 

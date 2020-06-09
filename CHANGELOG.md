@@ -1,3 +1,10 @@
+## [4.1.3]
+
+breaking changes:
+
+- `SlimObject` -> `SlimController`
+- `SlimAppStateObject` -> `SlimAppStateController`
+
 ## [4.1.2]
 
 - code polish
@@ -28,7 +35,7 @@ breaking changes:
 
 ## [3.3.5]
 
-- introducing `SlimAppStateObject` to extend `SlimObject` and getting `AppLifecycleState` events
+- introducing `SlimAppStateObject` to extend `SlimController` and getting `AppLifecycleState` events
 
 ## [3.3.4]
 
@@ -50,7 +57,7 @@ breaking changes:
 
 ## [3.3.0]
 
-- changed `SlimObject` init & dispose methods to onInit & onDispose
+- changed `SlimController` init & dispose methods to onInit & onDispose
 
 ## [3.2.9]
 
@@ -58,7 +65,7 @@ breaking changes:
 
 ## [3.2.8]
 
-- adding to `SlimObject` init & dispose methods to call in matching Slim state (can be overriden)
+- adding to `SlimController` init & dispose methods to call in matching Slim state (can be overriden)
 
 ## [3.2.7]
 
@@ -66,7 +73,7 @@ breaking changes:
 
 ## [3.2.6]
 
-- add closeKeyboard() to `SlimObject`
+- add closeKeyboard() to `SlimController`
 
 ## [3.2.5]
 
@@ -74,15 +81,15 @@ breaking changes:
 
 ## [3.2.4]
 
-- T slim<T>() for `SlimObject`
+- T slim<T>() for `SlimController`
 
 ## [3.2.3]
 
-- forceClearMessage & clearMessage for `SlimObject`
+- forceClearMessage & clearMessage for `SlimController`
 
 ## [3.2.2]
 
-- call UI messages directly from `SlimObject` (no need to use context extensions)
+- call UI messages directly from `SlimController` (no need to use context extensions)
 - change slim access from dependOnInheritedWidgetOfExactType to findAncestorWidgetOfExactType to enable initState access
 
 ## [3.2.1]

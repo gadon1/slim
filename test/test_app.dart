@@ -25,7 +25,7 @@ class TestApp extends StatelessWidget {
   }
 }
 
-class User extends SlimAppStateObject {
+class User extends SlimAppStateController {
   String userName;
   String password;
 
@@ -46,7 +46,7 @@ class LoginService extends SlimApi {
       post("logout", {"userName": user.userName});
 }
 
-class LoginBloc extends SlimAppStateObject {
+class LoginBloc extends SlimAppStateController {
   badLogin(User user) async {
     closeKeyboard();
     final loginService = context.slim<LoginService>();

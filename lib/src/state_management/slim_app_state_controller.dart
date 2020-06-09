@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'slim_object.dart';
+import 'slim_controller.dart';
 
 /// Abstract class for recommended state object that gets AppLifecycleState events
-abstract class SlimAppStateObject extends SlimObject
+abstract class SlimAppStateController extends SlimController
     with WidgetsBindingObserver {
   @override
   void onInit() => WidgetsBinding.instance.addObserver(this);
