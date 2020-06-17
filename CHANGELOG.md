@@ -1,3 +1,9 @@
+## [4.1.7]
+
+- String extension method String.format
+- BuildContext translatef method that combine String.format method
+- `SlimWidget` abstraction to speed `SlimBuilder` wrap
+
 ## [4.1.6]
 
 Localization:

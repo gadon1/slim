@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../localization.dart';
 import '../message.dart';
 import '../state_management/slim.dart';
+import 'string.dart';
 
 /// Useful extension methods on [BuildContext]
 extension SlimBuildContextContextX on BuildContext {
@@ -77,6 +78,12 @@ extension SlimBuildContextContextX on BuildContext {
   /// Get current locale translation by key
   String translate(String key, [String group]) =>
       SlimLocalizations.slimLocaleLoader.translate(key, group);
+
+  /// Get current locale translation by key with format variables
+  String translatef(String key, {String group, List<dynamic> variables}) =>
+      SlimLocalizations.slimLocaleLoader
+          .translate(key, group)
+          .format(variables);
 
   /// Get OS locale text direction
   TextDirection get textDirection =>
