@@ -227,7 +227,7 @@ Widget build(BuildContext context){
 }
 ```
 
-Simple Access - can't do `updateUI(current:true)`
+Simple Access - without `updateUI(current:true)` support
 
 ```dart
 @override
@@ -254,7 +254,8 @@ The full extension methods list is:
 
 **`String`**\
 `bool isNullOrEmpty`\
-`bool isNotNullOrEmpty`
+`bool isNotNullOrEmpty`\
+`String format(List<dynamic> variables)`
 
 **`BuildContext`**\
 `bool hasOverlay` - true if any overlay currently displayed\
