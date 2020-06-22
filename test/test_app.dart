@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+//import 'package:slim/slim.dart';
 import '../lib/slim.dart';
 
 class TestApp extends StatelessWidget {
@@ -82,75 +83,70 @@ Key userKey = Key("user");
 Key goodLoginKey = Key("goodLogin");
 Key passwordKey = Key("password");
 
-class Login extends StatelessWidget {
+class Login extends SlimWidget<LoginBloc> {
   @override
-  Widget build(BuildContext context) {
-    return SlimBuilder<LoginBloc>(
-      builder: (loginBloc) {
-        final user = context.slim<User>();
-        return Scaffold(
-          backgroundColor: Colors.white,
-          body: Center(
-            child: Container(
-              width: context.width * 0.8,
-              child: Card(
-                elevation: 5,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
+  Widget slimBuild(BuildContext context, LoginBloc controller) {
+    final user = context.slim<User>();
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Container(
+          width: context.width * 0.8,
+          child: Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    context.translate("loginform"),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    key: userKey,
+                    decoration: InputDecoration(
+                      hintText: "Username",
+                      alignLabelWithHint: true,
+                    ),
+                    initialValue: user.userName,
+                    onChanged: (value) => user.userName = value,
+                  ),
+                  TextFormField(
+                    key: passwordKey,
+                    decoration: InputDecoration(
+                      hintText: "Password",
+                      alignLabelWithHint: true,
+                    ),
+                    initialValue: user.password,
+                    onChanged: (value) => user.password = value,
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
-                        context.translate("loginform"),
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                      FlatButton(
+                        child: Text(context.translate("badlogin")),
+                        onPressed: () => controller.badLogin(user),
+                        color: Colors.pink,
                       ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        key: userKey,
-                        decoration: InputDecoration(
-                          hintText: "Username",
-                          alignLabelWithHint: true,
-                        ),
-                        initialValue: user.userName,
-                        onChanged: (value) => user.userName = value,
-                      ),
-                      TextFormField(
-                        key: passwordKey,
-                        decoration: InputDecoration(
-                          hintText: "Password",
-                          alignLabelWithHint: true,
-                        ),
-                        initialValue: user.password,
-                        onChanged: (value) => user.password = value,
-                        obscureText: true,
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          FlatButton(
-                            child: Text(context.translate("badlogin")),
-                            onPressed: () => loginBloc.badLogin(user),
-                            color: Colors.pink,
-                          ),
-                          FlatButton(
-                            key: goodLoginKey,
-                            child: Text(context.translate("goodlogin")),
-                            onPressed: () => loginBloc.goodLogin(user),
-                            color: Colors.green,
-                          )
-                        ],
-                      ),
+                      FlatButton(
+                        key: goodLoginKey,
+                        child: Text(context.translate("goodlogin")),
+                        onPressed: () => controller.goodLogin(user),
+                        color: Colors.green,
+                      )
                     ],
                   ),
-                ),
+                ],
               ),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

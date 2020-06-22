@@ -6,13 +6,12 @@ SlimMessageObject msg = SlimMessageObject();
 enum MessageType { Overlay, Snackbar, Widget }
 
 class SlimMessageObject extends ChangeNotifier {
-  Color backgroundColor;
+  Color backgroundColor,overlayColor;
   TextStyle textStyle;
   dynamic message;
   MessageType messageType;
   Widget widget;
   bool dismissible;
-  Color overlayColor;
   double overlayOpacity;
 
   Future<bool> _onWillPop() async {

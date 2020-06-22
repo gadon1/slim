@@ -14,6 +14,18 @@ class TestLocalization extends SlimLocaleLoader {
 }
 
 void main() {
+  test('levenshtein score', () {
+    final res = "פלפלים".levenshteinScore('פלפל ירוק חריף');
+    expect(res, 0.6428571428571429);
+  });
+
+  test('date format', () {
+    final date = DateTime(2021, 6, 2);
+    expect(date.format('d/m/yy'), '2/6/21');
+    expect(date.format('dd-m-yyyy'), '02-6-2021');
+    expect(date.format('dd/mm/yyyy'), '02/06/2021');
+  });
+
   testWidgets('slim', (WidgetTester tester) async {
     DateTime dt = DateTime.now();
 
