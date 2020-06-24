@@ -13,6 +13,8 @@ extension SlimDateTimeX on DateTime {
     else
       res = res.replaceFirst('d', "$day");
 
+    res = res.replaceFirst('mi', "$minute".padLeft(2, '0'));
+
     if (res.contains('mm'))
       res = res.replaceFirst('mm', "$month".padLeft(2, '0'));
     else
@@ -22,8 +24,6 @@ extension SlimDateTimeX on DateTime {
       res = res.replaceFirst('yyyy', "$year");
     else
       res = res.replaceFirst('yy', "$year".substring(2));
-
-    res = res.replaceFirst('mi', "$minute".padLeft(2, '0'));
 
     if (res.contains('ss'))
       res = res.replaceFirst('ss', "$second".padLeft(2, '0'));

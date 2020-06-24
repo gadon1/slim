@@ -1,3 +1,7 @@
+## [4.2.0]
+
+- Date extention method for DateTime.format([d,dd,m,mm,yy,yyyy,h,hh,mi,s,ss]) - fix mi format
+
 ## [4.1.9]
 
 - Date extention method for DateTime.format([d,dd,m,mm,yy,yyyy,h,hh,mi,s,ss])
