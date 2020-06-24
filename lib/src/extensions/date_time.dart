@@ -23,6 +23,18 @@ extension SlimDateTimeX on DateTime {
     else
       res = res.replaceFirst('yy', "$year".substring(2));
 
+    res = res.replaceFirst('mi', "$minute".padLeft(2, '0'));
+
+    if (res.contains('ss'))
+      res = res.replaceFirst('ss', "$second".padLeft(2, '0'));
+    else
+      res.replaceFirst('s', "$second");
+
+    if (res.contains('hh'))
+      res = res.replaceFirst('hh', "$hour".padLeft(2, '0'));
+    else
+      res.replaceFirst('h', "$hour");
+
     return res;
   }
 }

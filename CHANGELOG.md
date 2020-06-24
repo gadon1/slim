@@ -1,3 +1,7 @@
+## [4.1.9]
+
+- Date extention method for DateTime.format([d,dd,m,mm,yy,yyyy,h,hh,mi,s,ss])
+
 ## [4.1.8]
 
 - String extension method for levenshtein score
