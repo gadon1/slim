@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'response.dart';
 
@@ -60,14 +61,15 @@ abstract class SlimApi {
 
       print("$method $url ${json ?? ''}");
 
-      final result = await (withBody
+      final http.Response result = await (withBody
           ? call(url, body: json, headers: createHeaders(method, extra: extra))
           : call(url, headers: createHeaders(method, extra: extra)));
 
       st.stop();
       final response =
           SlimResponse(url, method, result.statusCode, st.elapsedMilliseconds)
-            ..body = result.body;
+            ..body = result.body
+            ..bytes = result.bodyBytes;
       if (!response.success) response.exception = result.reasonPhrase;
       print(response);
       return response;

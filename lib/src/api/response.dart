@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'api.dart';
 import '../extensions/string.dart';
 
@@ -11,6 +13,9 @@ class SlimResponse {
 
   /// Response body
   String body;
+
+  /// Response bytes
+  Uint8List bytes;
 
   /// Response exception - use error instead
   String exception;
