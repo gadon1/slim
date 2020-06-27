@@ -1,3 +1,8 @@
+## [4.2.2]
+
+- date format bug fix
+- remove unused imports
+
 ## [4.2.1]
 
 - Add bytes to `SlimResponse`

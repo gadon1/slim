@@ -6,16 +6,19 @@ extension SlimDateTimePrivateX on DateTime {
 }
 
 extension SlimDateTimeX on DateTime {
-  String format(String pattern) => pattern.toLowerCase()
-    ..replaceFirst('dd', "$day".padLeft(2, '0'))
-    ..replaceFirst('d', "$day")
-    ..replaceFirst('mi', "$minute".padLeft(2, '0'))
-    ..replaceFirst('mm', "$month".padLeft(2, '0'))
-    ..replaceFirst('m', "$month")
-    ..replaceFirst('yyyy', "$year")
-    ..replaceFirst('yy', "$year".substring(2))
-    ..replaceFirst('ss', "$second".padLeft(2, '0'))
-    ..replaceFirst('s', "$second")
-    ..replaceFirst('hh', "$hour".padLeft(2, '0'))
-    ..replaceFirst('h', "$hour");
+  String format(String pattern) {
+    String res = pattern.toLowerCase();
+    res = res.replaceFirst('dd', "$day".padLeft(2, '0'));
+    res = res.replaceFirst('d', "$day");
+    res = res.replaceFirst('mi', "$minute".padLeft(2, '0'));
+    res = res.replaceFirst('mm', "$month".padLeft(2, '0'));
+    res = res.replaceFirst('m', "$month");
+    res = res.replaceFirst('yyyy', "$year");
+    res = res.replaceFirst('yy', "$year".substring(2));
+    res = res.replaceFirst('ss', "$second".padLeft(2, '0'));
+    res = res.replaceFirst('s', "$second");
+    res = res.replaceFirst('hh', "$hour".padLeft(2, '0'));
+    res = res.replaceFirst('h', "$hour");
+    return res;
+  }
 }

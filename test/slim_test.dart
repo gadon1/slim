@@ -21,8 +21,9 @@ void main() {
 
   test('date format', () {
     final date = DateTime(2021, 6, 2);
-    expect(date.format('d/m/yy'), '2/6/21');
     expect(date.format('dd-m-yyyy'), '02-6-2021');
+    expect(date.format('d/m/yy'), '2/6/21');
+
     expect(date.format('dd/mm/yyyy'), '02/06/2021');
   });
 
