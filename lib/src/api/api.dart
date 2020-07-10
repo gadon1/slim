@@ -20,7 +20,7 @@ abstract class SlimApi {
   SlimApi(this.serverUrl, {this.logLevel = SlimApiLogLevel.CALLS});
 
   /// Set request headers
-  Map<String, dynamic> createHeaders(SlimApiMethod method, {String extra}) =>
+  Map<String, String> createHeaders(SlimApiMethod method, {String extra}) =>
       {contentType: applicationJSON};
 
   /// Set request query params

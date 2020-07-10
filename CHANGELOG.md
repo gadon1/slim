@@ -1,3 +1,7 @@
+## [4.2.6]
+
+- `SlimApi` bug fixes
+
 ## [4.2.5]
 
 - add queryParams to every `SlimApi` method
