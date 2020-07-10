@@ -20,27 +20,33 @@ abstract class SlimApi {
   SlimApi(this.serverUrl, {this.logLevel = SlimApiLogLevel.CALLS});
 
   /// Set request headers
-  Map<String, String> createHeaders(SlimApiMethod method, {String extra}) =>
+  Map<String, dynamic> createHeaders(SlimApiMethod method, {String extra}) =>
       {contentType: applicationJSON};
 
   /// Set request query params
-  Map<String, String> createQuery(SlimApiMethod method, {String extra}) => {};
+  Map<String, dynamic> createQuery(SlimApiMethod method, {String extra}) => {};
 
   /// GET request to serverlUrl/serviceUrl, extra parametes passed to createHeaders method
   Future<SlimResponse> get(String serviceUrl,
           {Map<String, dynamic> queryParams, String extra}) =>
-      _request(serviceUrl, SlimApiMethod.GET, extra: extra);
+      _request(serviceUrl, SlimApiMethod.GET,
+          extra: extra, queryParams: queryParams);
 
   /// DELETE request to serverlUrl/serviceUrl, extra parametes passed to createHeaders method
-  Future<SlimResponse> delete(String serviceUrl, {String extra}) =>
-      _request(serviceUrl, SlimApiMethod.DELETE, extra: extra);
+  Future<SlimResponse> delete(String serviceUrl,
+          {Map<String, dynamic> queryParams, String extra}) =>
+      _request(serviceUrl, SlimApiMethod.DELETE,
+          extra: extra, queryParams: queryParams);
 
   /// POST request to serverlUrl/serviceUrl, extra parametes passed to createHeaders method
-  Future<SlimResponse> post(String serviceUrl, dynamic body, {String extra}) =>
-      _request(serviceUrl, SlimApiMethod.POST, body: body, extra: extra);
+  Future<SlimResponse> post(String serviceUrl, dynamic body,
+          {Map<String, dynamic> queryParams, String extra}) =>
+      _request(serviceUrl, SlimApiMethod.POST,
+          body: body, extra: extra, queryParams: queryParams);
 
   /// PUT request to serverlUrl/serviceUrl, extra parametes passed to createHeaders method
-  Future<SlimResponse> put(String serviceUrl, dynamic body, {String extra}) =>
+  Future<SlimResponse> put(String serviceUrl, dynamic body,
+          {Map<String, dynamic> queryParams, String extra}) =>
       _request(serviceUrl, SlimApiMethod.PUT, body: body, extra: extra);
 
   Function _getCall(SlimApiMethod method) {
@@ -58,18 +64,26 @@ abstract class SlimApi {
     }
   }
 
-  String _urlBuilder(String serviceUrl, SlimApiMethod method, {String extra}) {
+  String _urlBuilder(String serviceUrl, SlimApiMethod method,
+      {Map<String, dynamic> queryParams, String extra}) {
     String url = "$serverUrl/$serviceUrl";
-    Map<String, dynamic> queryParams = createQuery(method, extra: extra);
+    Map<String, dynamic> _queryParams = createQuery(method, extra: extra);
+    _queryParams.addAll(queryParams ?? {});
     String query = "";
-    queryParams.forEach((key, value) => query = "$query&$key=$value");
+    _queryParams.forEach((key, value) => query = "$query&$key=$value");
     if (url.contains('?')) return "$url$query";
     return query.isNotEmpty ? "$url?${query.substring(1)}" : url;
   }
 
-  Future<SlimResponse> _request(String serviceUrl, SlimApiMethod method,
-      {dynamic body, String extra}) async {
-    final url = _urlBuilder(serviceUrl, method, extra: extra);
+  Future<SlimResponse> _request(
+    String serviceUrl,
+    SlimApiMethod method, {
+    dynamic body,
+    String extra,
+    Map<String, dynamic> queryParams,
+  }) async {
+    final url =
+        _urlBuilder(serviceUrl, method, extra: extra, queryParams: queryParams);
     final st = Stopwatch()..start();
     final bool withBody = body != null;
     try {

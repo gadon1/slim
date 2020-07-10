@@ -1,3 +1,7 @@
+## [4.2.5]
+
+- add queryParams to every `SlimApi` method
+
 ## [4.2.4]
 
 - add read only option for sliming
