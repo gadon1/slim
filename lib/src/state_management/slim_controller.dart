@@ -20,7 +20,7 @@ abstract class SlimController extends ChangeNotifier {
 
   List<BuildContext> _contexts = [];
 
-  T slim<T>() => context?.slim<T>();
+  T slim<T>() => context?.slim<T>(read: true);
 
   void onInit() {}
   void onDispose() {}

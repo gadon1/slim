@@ -8,7 +8,7 @@ class TestApp extends StatelessWidget {
     return [
       Slimer<User>(User()),
       Slimer<LoginService>(LoginService()),
-      Slimer<LoginBloc>(LoginBloc()),
+      Slimer<LoginController>(LoginController()),
     ].slim(
       child: MaterialApp(
         builder: SlimMaterialAppBuilder.builder,
@@ -47,31 +47,23 @@ class LoginService extends SlimApi {
       post("logout", {"userName": user.userName});
 }
 
-class LoginBloc extends SlimAppStateController {
+class LoginController extends SlimController {
   badLogin(User user) async {
-    closeKeyboard();
-    final loginService = context.slim<LoginService>();
+    final loginService = slim<LoginService>();
     showWidget(CircularProgressIndicator(), dismissible: false);
     final result = await loginService.login(user);
     forceClearOverlay();
     if (result.success)
       Home().pushReplacement(context);
     else
-      context.showOverlay(
+      context.showSnackBar(
         context.translate("badcreds"),
         backgroundColor: Colors.red,
       );
   }
 
-  @override
-  void onAppStateChanged(AppLifecycleState state) {
-    print(state);
-    print("login bloc");
-  }
-
   goodLogin(User user) async {
-    closeKeyboard();
-    final loginService = context.slim<LoginService>();
+    final loginService = slim<LoginService>();
     showWidget(CircularProgressIndicator(), dismissible: false);
     await loginService.login(user);
     forceClearOverlay();
@@ -83,9 +75,9 @@ Key userKey = Key("user");
 Key goodLoginKey = Key("goodLogin");
 Key passwordKey = Key("password");
 
-class Login extends SlimWidget<LoginBloc> {
+class Login extends SlimWidget<LoginController> {
   @override
-  Widget slimBuild(BuildContext context, LoginBloc controller) {
+  Widget slimBuild(BuildContext context, LoginController controller) {
     final user = context.slim<User>();
     return Scaffold(
       backgroundColor: Colors.white,

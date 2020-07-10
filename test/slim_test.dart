@@ -38,14 +38,14 @@ void main() {
       ..translations["hi"] = hi;
 
     await tester.pumpWidget(TestApp());
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(10.seconds);
 
     expect(find.byType(TextFormField), findsNWidgets(2));
     expect(find.byType(FlatButton), findsNWidgets(2));
 
     await tester.enterText(find.byKey(userKey), userName);
     await tester.enterText(find.byKey(passwordKey), password);
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(10.seconds);
 
     expect(find.text('$hi $userName'), findsNothing);
     expect(find.text('$userName'), findsOneWidget);

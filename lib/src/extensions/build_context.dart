@@ -49,7 +49,8 @@ extension SlimBuildContextContextX on BuildContext {
   bool get hasOverlay => msg.hasOverlay;
 
   /// Access the nearest T up the tree
-  T slim<T>() => Slim.of<T>(this);
+  T slim<T>({bool read = false}) =>
+      read ? Slim.read<T>(this) : Slim.of<T>(this);
 
   /// [MediaQuery] width
   double get width => MediaQuery.of(this).size.width;

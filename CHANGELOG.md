@@ -1,3 +1,8 @@
+## [4.2.3]
+
+- example updated width `SlimController` and `SlimWidget`
+- `SlimApi` LogLevel option and `createQuery` method to pass query string
+
 ## [4.2.2]
 
 - date format bug fix

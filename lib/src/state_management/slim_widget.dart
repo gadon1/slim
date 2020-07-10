@@ -12,7 +12,7 @@ abstract class SlimWidget<T extends SlimController> extends StatelessWidget {
   Widget slimBuild(BuildContext context, T controller);
 
   @override
-  Widget build(BuildContext context) => SlimBuilder(
+  Widget build(BuildContext context) => SlimBuilder<T>(
         instance: controller,
         builder: (stateObject) => slimBuild(context, stateObject),
       );

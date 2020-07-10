@@ -387,11 +387,11 @@ class LoginService extends SlimApi {
 }
 ```
 
-4. LoginBloc class - Business logic
+4. LoginController class - Business logic
 
 ```dart
 /// Extends slim SlimController class
-class LoginBloc extends SlimController {
+class LoginController extends SlimController {
   badLogin(User user) async {
     /// Access login service via slim
     final loginService = slim<LoginService>();
@@ -429,11 +429,6 @@ class LoginBloc extends SlimController {
 
 ```dart
 class MyApp extends StatelessWidget {
-  MyApp() {
-    /// Set slim supported locales
-    SlimLocalizations.supportedLocales = [Locale('en', 'US')];
-  }
-
   @override
   Widget build(BuildContext context) {
     return [
@@ -441,8 +436,8 @@ class MyApp extends StatelessWidget {
       Slimer<User>(User()),
       /// Putting single instance of LoginService at the top of the tree
       Slimer<LoginService>(LoginService()),
-      /// Putting single instance of LoginBloc at the top of the tree
-      Slimer<LoginBloc>(LoginBloc()),
+      /// Putting single instance of LoginController at the top of the tree
+      Slimer<LoginBloc>(LoginController()),
     ].slim(
       child: MaterialApp(
         /// Configure material app builder for slim UI messages support
@@ -456,7 +451,7 @@ class MyApp extends StatelessWidget {
         /// Configure slim localizations delegates
         localizationsDelegates: SlimLocalizations.delegates,
         /// Configure slim localizations supported locales
-        supportedLocales: SlimLocalizations.supportedLocales,
+        supportedLocales: SlimLocalizations.supportedLocales..addAll([Locale('en', 'US')]),
       ),
     );
   }
@@ -466,80 +461,75 @@ class MyApp extends StatelessWidget {
 6. Login screen
 
 ```dart
-class Login extends StatelessWidget {
+class Login extends SlimWidget<LoginController> {
   @override
-  Widget build(BuildContext context) {
-    /// Using slim builder to access login bloc instance
-    return SlimBuilder<LoginBloc>(
-      builder: (loginBloc) {
-        /// Simple slim access to user instance
-        final user = context.slim<User>();
-        return Scaffold(
-          backgroundColor: Colors.blue,
-          body: Center(
-            child: Container(
-              /// BuildContext extension method context.width = MediaQuery.of(context).size.width
-              width: context.width * 0.8,
-              child: Card(
-                elevation: 5,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
+  Widget slimBuild(BuildContext context,LoginController controller) {
+    /// Simple slim access to user instance
+    final user = context.slim<User>(read:true);
+    return Scaffold(
+      backgroundColor: Colors.blue,
+      body: Center(
+        child: Container(
+          /// BuildContext extension method context.width = MediaQuery.of(context).size.width
+          width: context.width * 0.8,
+          child: Card(
+            elevation: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(
+                    /// slim locale translation
+                    context.translate("loginform"),
+                    style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  SizedBox(height: 20),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        hintText: "Username",
+                        alignLabelWithHint: true,
+                    ),
+                    initialValue: user.userName,
+                    onChanged: (value) => user.userName = value,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                        hintText: "Password",
+                        alignLabelWithHint: true,
+                    ),
+                    initialValue: user.password,
+                    onChanged: (value) => user.password = value,
+                    obscureText: true,
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Text(
+                      FlatButton(
                         /// slim locale translation
-                        context.translate("loginform"),
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                        child: Text(context.translate("badlogin")),
+                        /// Using the controller
+                        onPressed: () => controller.badLogin(user),
+                        color: Colors.pink,
                       ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: "Username",
-                          alignLabelWithHint: true,
-                        ),
-                        initialValue: user.userName,
-                        onChanged: (value) => user.userName = value,
-                      ),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: "Password",
-                          alignLabelWithHint: true,
-                        ),
-                        initialValue: user.password,
-                        onChanged: (value) => user.password = value,
-                        obscureText: true,
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          FlatButton(
-                            /// slim locale translation
-                            child: Text(context.translate("badlogin")),
-                            /// Using the bloc
-                            onPressed: () => loginBloc.badLogin(user),
-                            color: Colors.pink,
-                          ),
-                          FlatButton(
-                            /// slim locale translation
-                            child: Text(context.translate("goodlogin")),
-                            /// Using the bloc
-                            onPressed: () => loginBloc.goodLogin(user),
-                            color: Colors.green,
-                          )
-                        ],
-                      ),
+                      FlatButton(
+                        /// slim locale translation
+                        child: Text(context.translate("goodlogin")),
+                        /// Using the controller
+                        onPressed: () => controller.goodLogin(user),
+                        color: Colors.green,
+                      )
                     ],
                   ),
-                ),
+                ],
               ),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

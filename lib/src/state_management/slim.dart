@@ -12,6 +12,11 @@ class Slim<T> extends StatefulWidget {
   @override
   _SlimState<T> createState() => _SlimState<T>();
 
+  static T read<T>(BuildContext context) => (context
+          .findAncestorWidgetOfExactType<SlimInhertiedNotifier<T>>()
+          .notifier as SlimNotifier)
+      .stateObject;
+
   static T of<T>(BuildContext context) {
     try {
       return (context
