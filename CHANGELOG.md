@@ -1,3 +1,8 @@
+## [4.2.4]
+
+- add read only option for sliming
+- `SlimController` resolve instances with read:true
+
 ## [4.2.3]
 
 - example updated width `SlimController` and `SlimWidget`
