@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../localization.dart';
-import '../message.dart';
+import '../messages/slim_message.dart';
+import '../messages/message_type.dart';
 import '../state_management/slim.dart';
 import 'string.dart';
 

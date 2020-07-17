@@ -1,3 +1,7 @@
+## [4.2.7]
+
+- code polish
+
 ## [4.2.6]
 
 - `SlimApi` bug fixes

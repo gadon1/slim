@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'state_management/slim.dart';
-import 'message.dart';
+import 'messages/slim_message.dart';
+import 'messages/slim_message_object.dart';
 
 /// Provide MaterialApp.builder function to support slim UI messages
 class SlimMaterialAppBuilder {
